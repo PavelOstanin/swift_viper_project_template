@@ -1,0 +1,158 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import Alamofire
+import PromiseKit
+import ObjectMapper
+
+
+extension RequestExecutor {
+    
+    func promiseTokenQuery(request: URLRequest?) -> Promise<BaseResponse<AccessToken>> {
+        return Promise<BaseResponse<AccessToken>> { (fullfit, reject) in
+            guard let request = request else {
+                reject(BookisError.invalidRequest)
+                return
+            }
+            
+            self.runRequest(request: request) { (resp, err) in
+                if let err = err {
+                    reject(err)
+                } else {
+                    if let obj = Mapper<BaseResponse<AccessToken>>(context: nil).map(JSONObject: resp) {
+                        if let accessToken = obj.result {
+                            self.proccess(accessToken: accessToken)
+                        }
+                        fullfit(obj)
+                    } else {
+                        reject(BookisError.invalidJSON)
+                    }
+                }
+            }
+        }
+    }
+
+    func promiseQuery<ResultType>(request: URLRequest?) -> Promise<BaseResponse<ResultType>> {
+        return Promise<BaseResponse<ResultType>> { (fullfit, reject) in
+            guard let request = request else {
+                reject(BookisError.invalidRequest)
+                return
+            }
+            self.runRequest(request: request) { (json, err) in
+                if let err = err {
+                    reject(err)
+                } else {
+                    
+                    if let obj = Mapper<BaseResponse<ResultType>>(context: nil).map(JSONObject: json) {
+                        fullfit(obj)
+                    } else {
+                        reject(BookisError.invalidJSON)
+                    }
+                }
+            }
+
+        }
+    }
+    
+    func promiseVoidQuery(request: URLRequest?) -> Promise<Response> {
+        return Promise<Response> { (fullfit, reject) in
+            guard let request = request else {
+                reject(BookisError.invalidRequest)
+                return
+            }
+            
+            self.runRequest(request: request) { (json, err) in
+                if let err = err {
+                    reject(err)
+                } else {
+                    if let obj = Mapper<Response>(context: nil).map(JSONObject: json) {
+                        fullfit(obj)
+                    } else {
+                        reject(BookisError.invalidJSON)
+                    }
+                }
+            }
+        }
+    }
+    
+    func promiseArrayQuery<ResultType>(request: URLRequest?) -> Promise<BaseArrayResponse<ResultType>> {
+        return Promise<BaseArrayResponse<ResultType>> { (fullfit, reject) in
+            guard let request = request else {
+                reject(BookisError.invalidRequest)
+                return
+            }
+            self.runRequest(request: request) { (json, err) in
+                if let err = err {
+                    reject(err)
+                } else {
+                    if let obj = Mapper<BaseArrayResponse<ResultType>>(context: nil).map(JSONObject: json) {
+                        fullfit(obj)
+                    } else {
+                        reject(BookisError.invalidJSON)
+                    }
+                }
+            }            
+        }
+    }
+    
+    func promisePaginationQuery<T: Mappable>(request: URLRequest?) -> Promise<BasePageResponse<T>> {
+        return Promise<BasePageResponse<T>> { (fullfit, reject) in
+            guard let request = request else {
+                reject(BookisError.invalidRequest)
+                return
+            }
+            self.runRequest(request: request) { (json, err) in
+                if let err = err {
+                    reject(err)
+                } else {
+                    if let obj = Mapper<BasePageResponse<T>>(context: nil).map(JSONObject: json) {
+                        fullfit(obj)
+                    } else {
+                        reject(BookisError.invalidJSON)
+                    }
+                }
+            }
+        }
+    }
+
+    func promiseUpload(toUrl url: URLConvertible, data: Data, progress: ((Double) -> Void)?) -> Promise<PhotoResponse> {
+        return Promise<PhotoResponse> { (fullfit, reject) in
+            self.uploadData(toUrl: url, data: data, progress: progress) { (json, err) in
+                if let err = err {
+                    reject(err)
+                } else {
+                    if let obj = Mapper<PhotoResponse>(context: nil).map(JSONObject: json) {
+                        fullfit(obj)
+                    } else {
+                        reject(BookisError.invalidJSON)
+                    }
+                }
+            }
+        }
+    }
+
+    
+    func promiseUploadImage<ResultType>(toUrl url: URLConvertible, parametrs: [String : Any]?, imageData: Data?, progress: ((Double) -> Void)?) -> Promise<BaseResponse<ResultType>> {
+        return Promise<BaseResponse<ResultType>> { (fullfit, reject) in
+            self.uploadData(toUrl: url, parametrs: parametrs, imageData: imageData, progress: progress, completion: { (json, err) in
+                if let err = err {
+                    reject(err)
+                } else {
+                    if let obj = Mapper<BaseResponse<ResultType>>(context: nil).map(JSONObject: json) {
+                        fullfit(obj)
+                    } else {
+                        reject(BookisError.invalidJSON)
+                    }
+                }
+            })
+        }
+    }
+
+    
+}

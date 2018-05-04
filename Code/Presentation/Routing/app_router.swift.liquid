@@ -1,0 +1,113 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+import Compass
+
+class AppRouterImpl: AppRouterProtocol {
+
+    // MARK:
+    private let modulesList: Array<ModuleFactoryProtocol>
+    private let _navigationController: UINavigationController
+
+    init(withNavigation controller: UINavigationController, modules: Array<ModuleFactoryProtocol>, urlScheme: String) {
+        
+        _navigationController = controller
+        _navigationController.setNavigationBarHidden(true, animated: false)
+        modulesList = modules
+        
+        Compass.scheme = urlScheme
+        Compass.routes = modulesList.map {
+            return $0.moduleURN
+        }
+
+    }
+    
+    // MARK:
+    
+    var navigationController: UINavigationController {
+        return _navigationController
+    }
+    
+    func pushModule(byUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?) {
+        
+        guard let url = URL(string:"\(Compass.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
+        
+        guard let controller = createModule(byUrl: url, completion: completion) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        
+        navigationController.pushViewController(controller, animated: animated)
+    }
+    
+    func replaceViewStack(rootUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?) {
+        
+        guard let url = URL(string:"\(Compass.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
+        
+        guard let controller = createModule(byUrl: url, completion: completion) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        
+        navigationController.setViewControllers([controller], animated: animated)
+    }
+    
+    func presentModule(byUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?) {
+        
+        guard let url = URL(string:"\(Compass.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
+        
+        guard let controller = createModule(byUrl: url, completion: completion) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        
+        navigationController.present(controller, animated: animated, completion: nil)
+    }
+    
+    //
+    
+    func popToRootController(animated: Bool) {
+        navigationController.popToRootViewController(animated: animated)
+    }
+    
+    func popCurrentController(animated: Bool) {
+        navigationController.popViewController(animated: animated)
+    }
+    
+    func popToViewController(_ controller: UIViewController, animated: Bool) {
+        navigationController.popToViewController(controller, animated: animated)
+    }
+    
+    func dismissCurrentController(animated: Bool) {
+        navigationController.dismiss(animated: animated, completion: nil)
+    }
+    
+    // MARK:
+    
+    private func createModule(byUrl url: URL, completion: ModuleCompletionHandler?) -> UIViewController? {
+        
+        guard let location = Compass.parse(url: url) else {
+            return nil
+        }
+        
+        let arguments = location.arguments
+        
+        NSLog("Create module with path: '\(location.path)',  arguments: '\(arguments)'")
+        
+        let factory = modulesList.first {
+            return location.path == $0.moduleURN
+        }
+        
+        return factory?.createModule(arguments: arguments, completion: completion)
+    }
+    
+}

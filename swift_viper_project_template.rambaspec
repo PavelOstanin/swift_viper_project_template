@@ -1,0 +1,39 @@
+# Template information section
+name: "swift_viper_project_template"
+summary: "Swift module template with setup project. Based on swifty_viper"
+author: "Pavel Ostanin"
+version: "0.1.0"
+license: "MIT"
+
+# The declarations for code files
+
+code_files:
+# Presentation
+- {name: Presentation/PresentationAssemblyProtocol.swift,   path: Code/Presentation/presentation_assembly_protocol.swift.liquid, custom_name: "{{ prefix }}PresentationAssemblyProtocol.swift"}
+- {name: Presentation/PresentationAssembly.swift,           path: Code/Presentation/presentation_assembly.swift.liquid, custom_name: "{{ prefix }}PresentationAssembly.swift"}
+
+# Presentation/Routing
+- {name: Presentation/Routing/AppRouterProtocol.swift,      path: Code/Presentation/Routing/app_router_protocol.swift.liquid, custom_name: "{{ prefix }}AppRouterProtocol.swift"}
+- {name: Presentation/Routing/AppRouter.swift,              path: Code/Presentation/Routing/app_router.swift.liquid, custom_name: "{{ prefix }}AppRouter.swift"}
+- {name: Presentation/Routing/ModuleFactoryProtocol.swift,  path: Code/Presentation/Routing/module_factory_protocol.swift.liquid, custom_name: "{{ prefix }}ModuleFactoryProtocol.swift"}
+- {name: Presentation/Routing/ModuleInputProtocol.swift,    path: Code/Presentation/Routing/module_input_protocol.swift.liquid, custom_name: "{{ prefix }}ModuleInputProtocol.swift"}
+
+# Presentation/ApplicationRoot
+- {name: Presentation/ApplicationRoot/ApplicationRoot.swift,    path: Code/Presentation/ApplicationRoot/application_root.swift.liquid, custom_name: "{{ prefix }}ApplicationRoot.swift"}
+
+# Presentation/InAppNotification
+- {name: Presentation/InAppNotifications/InAppNotificationsProvider.swift,  path: Code/Presentation/InAppNotification/in_app_notifications_provider.swift.liquid, custom_name: "{{ prefix }}InAppNotificationsProvider.swift"}
+- {name: Presentation/InAppNotifications/InAppNotificationsProviderImpl.swift,    path: Code/Presentation/InAppNotification/in_app_notifications_provider_impl.swift.liquid, custom_name: "{{ prefix }}InAppNotificationsProviderImpl.swift"}
+
+# Services
+- {name: Services/ServicesAssemblyProtocol.swift,   path: Code/Services/services_assembly.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyProtocol.swift"}
+- {name: Services/ServicesAssembly.swift,           path: Code/Services/services_assembly_protocol.swift.liquid, custom_name: "{{ prefix }}ServicesAssembly.swift"}
+- {name: Services/ServicesAssemblyImpl.swift,       path: Code/Services/services_assembly_impl.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyImpl.swift"}
+
+# Services/APIService
+- {name: Services/APIService/APIService.swift,   path: Code/Services/APIService/api_service.swift.liquid, custom_name: "{{ prefix }}APIService.swift"}
+- {name: Services/APIService/APIServiceImpl.swift,           path: Code/Services/APIService/api_service_impl.swift.liquid, custom_name: "{{ prefix }}APIServiceImpl.swift"}
+- {name: Services/APIService/RequestBuilder.swift,       path: Code/Services/APIService/request_builder.swift.liquid, custom_name: "{{ prefix }}RequestBuilder.swift"}
+- {name: Services/APIService/RequestExecutor.swift,           path: Code/Services/APIService/request_executor.swift.liquid, custom_name: "{{ prefix }}RequestExecutor.swift"}
+- {name: Services/APIService/RequestExecutorExtension.swift,       path: Code/Services/APIService/request_executor_extension.swift.liquid, custom_name: "{{ prefix }}RequestExecutorExtension.swift"}
+
