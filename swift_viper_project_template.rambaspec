@@ -43,8 +43,8 @@ code_files:
 
 
 # Services
-- {name: Services/ServicesAssemblyProtocol.swift,   path: Code/Services/services_assembly.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyProtocol.swift"}
-- {name: Services/ServicesAssembly.swift,           path: Code/Services/services_assembly_protocol.swift.liquid, custom_name: "{{ prefix }}ServicesAssembly.swift"}
+- {name: Services/ServicesAssemblyProtocol.swift,   path: Code/Services/services_assembly_protocol.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyProtocol.swift"}
+- {name: Services/ServicesAssembly.swift,           path: Code/Services/services_assembly.swift.liquid, custom_name: "{{ prefix }}ServicesAssembly.swift"}
 - {name: Services/ServicesAssemblyImpl.swift,       path: Code/Services/services_assembly_impl.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyImpl.swift"}
 
 # Services/APIService
@@ -55,9 +55,9 @@ code_files:
 - {name: Services/APIService/RequestExecutorExtension.swift,       path: Code/Services/APIService/request_executor_extension.swift.liquid, custom_name: "{{ prefix }}RequestExecutorExtension.swift"}
 
 # Services/Settings
-- {name: Services/Settings/AppDefaultSettings.swift,      path: Code/Services/Settings/app_default_settings.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyProtocol.swift"}
-- {name: Services/Settings/AppSettingsServiceImpl.swift,  path: Code/Services/Settings/app_settings_service_impl.swift.liquid, custom_name: "{{ prefix }}ServicesAssembly.swift"}
-- {name: Services/Settings/AppSettingsService.swift,      path: Code/Services/Settings/app_settings_service.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyImpl.swift"}
+- {name: Services/Settings/AppDefaultSettings.swift,      path: Code/Services/Settings/app_default_settings.swift.liquid, custom_name: "{{ prefix }}AppDefaultSettings.swift"}
+- {name: Services/Settings/AppSettingsServiceImpl.swift,  path: Code/Services/Settings/app_settings_service_impl.swift.liquid, custom_name: "{{ prefix }}AppSettingsServiceImpl.swift"}
+- {name: Services/Settings/AppSettingsService.swift,      path: Code/Services/Settings/app_settings_service.swift.liquid, custom_name: "{{ prefix }}AppSettingsService.swift"}
 
 # Services/Location
 - {name: Services/Location/LocationServiceImpl.swift,    path: Code/Services/Location/location_service_impl.swift.liquid, custom_name: "{{ prefix }}LocationServiceImpl.swift"}
@@ -70,7 +70,7 @@ code_files:
 - {name: Helpers/AccessTokenAdapter.swift,       path: Code/Helpers/access_token_adapter.swift.liquid, custom_name: "{{ prefix }}AccessTokenAdapter.swift"}
 - {name: Helpers/URNBuilder.swift,               path: Code/Helpers/urn_builder.swift.liquid, custom_name: "{{ prefix }}URNBuilder.swift"}
 - {name: Helpers/PromiseResponseProtocol.swift,  path: Code/Helpers/promise_response_protocol.swift.liquid, custom_name: "{{ prefix }}PromiseResponseProtocol.swift"}
-- {name: Helpers/UIWindowExtension.swift,        path: Code/Helpers/promise_response_protocol.swift.liquid, custom_name: "{{ prefix }}UIWindowExtension.swift"}
+- {name: Helpers/UIWindowExtension.swift,        path: Code/Helpers/ui_window_extension.swift.liquid, custom_name: "{{ prefix }}UIWindowExtension.swift"}
 
 # Helpers/Error
 - {name: Helpers/Error/ApplicationError.swift,    path: Code/Helpers/Error/application_error.swift.liquid, custom_name: "{{ prefix }}ApplicationError.swift"}
