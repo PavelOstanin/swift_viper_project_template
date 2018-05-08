@@ -9,14 +9,19 @@
 import UIKit
 
 class ServicesAssemblyImpl: ServicesAssemblyProtocol {
-    
+
     let application: UIApplication
     //All Available Services should be here like
+    let settingsService: AppSettingsService
     let apiService: APIService
+    let locationService: LocationService
 
     init(application: UIApplication) {
         self.application = application
-        apiService = APIServiceImpl()
+        settingsService = AppSettingsServiceImpl()
+        apiService = APIServiceImpl(settingsService: settingsService)
+        
+        locationService = LocationServiceImpl(settingsService: settingsService)
     }
     
 }

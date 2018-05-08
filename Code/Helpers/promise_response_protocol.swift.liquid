@@ -1,0 +1,104 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import PromiseKit
+import ObjectMapper
+
+protocol PromiseResponseProtocol {
+    
+    func unwrap<T>(_ promise: Promise<BaseResponse<T>>) -> Promise<T>
+    func unwrap(_ promise: Promise<Response>) -> Promise<Response>
+    func unwrap(_ photoPromise: Promise<PhotoResponse>) -> Promise<PhotoResponse>
+    func unwrap<T>(_ promise: Promise<BasePageResponse<T>>) -> Promise<BasePageResponse<T>>
+    func unwrap<T>(_ promise: Promise<BaseArrayResponse<T>>) -> Promise<BaseArrayResponse<T>>
+    
+}
+
+extension PromiseResponseProtocol {
+    
+    func unwrap<T>(_ promise: Promise<BaseResponse<T>>) -> Promise<T> {
+        return promise
+            .then { (value) -> Promise<T> in
+                if let error = value.error {
+                    return Promise(error: error)
+                } else if let result = value.result {
+                    return .value(result)
+                }
+                return Promise(error: ApplicationError.invalidResponse)
+        }
+    }
+
+    func unwrap(_ promise: Promise<Response>) -> Promise<Response> {
+        return promise
+            .then { (value) -> Promise<Response> in
+            if let error = value.error {
+                return Promise(error: error)
+            } else {
+                return .value(value)
+            }
+        }
+    }
+
+    func unwrap(_ photoPromise: Promise<PhotoResponse>) -> Promise<PhotoResponse> {
+        return photoPromise
+            .then { (value) -> Promise<PhotoResponse> in
+                if let error = value.error {
+                    return Promise(error: error)
+                } else {
+                    return .value(value)
+                }
+        }
+    }
+    
+    func unwrap<T>(_ promise: Promise<BasePageResponse<T>>) -> Promise<BasePageResponse<T>> {
+        return promise
+            .then { (value) -> Promise<BasePageResponse<T>> in
+                if let error = value.error {
+                    return self.errorPromise(with: error)
+                } else {
+                    return self.successPromise(with: value)
+                }
+        }
+    }
+    
+    func successPromise<T>(with page: BasePageResponse<T>) -> Promise<BasePageResponse<T>> {
+        return Promise<BasePageResponse<T>> { seal in
+            return seal.fulfill(page)
+        }
+    }
+    
+    func errorPromise<T>(with error: APIError) -> Promise<BasePageResponse<T>> {
+        return Promise<BasePageResponse<T>> { seal in
+            return seal.reject(error)
+        }
+    }
+    
+    func unwrap<T>(_ promise: Promise<BaseArrayResponse<T>>) -> Promise<BaseArrayResponse<T>> {
+        return promise
+            .then { (value) -> Promise<BaseArrayResponse<T>> in
+                if let error = value.error {
+                    return self.errorPromise(with: error)
+                } else {
+                    return self.successPromise(with: value)
+                }
+        }
+    }
+    
+    func successPromise<T>(with page: BaseArrayResponse<T>) -> Promise<BaseArrayResponse<T>> {
+        return Promise<BaseArrayResponse<T>> { seal in
+            return seal.fulfill(page)
+        }
+    }
+    
+    func errorPromise<T>(with error: APIError) -> Promise<BaseArrayResponse<T>> {
+        return Promise<BaseArrayResponse<T>> { seal in
+            return seal.reject(error)
+        }
+    }
+    
+}

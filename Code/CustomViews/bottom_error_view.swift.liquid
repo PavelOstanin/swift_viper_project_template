@@ -1,0 +1,168 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import UIKit
+import SnapKit
+
+class BottomErrorView: UIView {
+    
+    struct ViewSizes {
+        
+        static let labelTopOffset       : CGFloat = 13.0
+        static let labelBottomOffset    : CGFloat = 18.0
+        static let labelRightOffset     : CGFloat = 45.0
+        static let labelLeftOffset      : CGFloat = 45.0
+        
+        static let closeButtonSize      : CGSize = CGSize(width : 45, height: 45)
+    }
+    
+    var currentViewController   : UIViewController? {
+        get {
+            return UIWindow.visibleViewController
+        }
+    }
+    
+    lazy var closeButton : UIButton = {
+        let button = UIButton.init(type: .custom)
+        //TODO: Add correct asset if needed
+//        button.setImage(UIImage.init(asset: Asset.closeErrorButtonIcon), for: .normal)
+        button.contentEdgeInsets = UIEdgeInsetsMake(0, 5.0, 5.0, 0)
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(closeButtonDidTouch(_:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    lazy var label : UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.textAlignment = .center
+        label.textColor = .white
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    var viewSize : CGSize = CGSize.zero {
+        didSet {
+            self.frame.size = self.viewSize
+        }
+    }
+    
+    var bottomViewConstraint : Constraint? = nil
+    
+    var timer : Timer? = nil
+    
+    class func errorView(message: String) -> BottomErrorView {
+        let errorView = BottomErrorView()
+        errorView.alpha = 0
+        errorView.label.text = message
+        errorView.setupView()
+        return errorView
+    }
+    
+    class func show(message : String, with duration : Double = 3.0) {
+        let errorView = self.errorView(message: message)
+        errorView.setupTimer(with: duration)
+        errorView.showView(toShow: true)
+    }
+    
+    class func show(message : String, controller: UIViewController, with duration : Double = 3.0) {
+        let errorView = self.errorView(message: message)
+        errorView.setupTimer(with: duration)
+        errorView.showView(toShow: true, in: controller)
+    }
+}
+
+
+extension BottomErrorView {
+    
+    func setupView () {
+        self.backgroundColor = UIColor.red
+        
+        [self.label, self.closeButton].forEach {
+            self.addSubview($0)
+        }
+        self.setupViewFrame()
+        self.currentViewController?.view.addSubview(self)
+        self.setupConstraints()
+        self.setupViewControllerConstraints()
+        self.layoutIfNeeded()
+    }
+    
+    func setupViewFrame () {
+        let screenSize = UIScreen.main.bounds.size
+        let labelSize = self.label.sizeThatFits(CGSize(width : screenSize.width - ViewSizes.labelRightOffset - ViewSizes.labelLeftOffset, height: CGFloat(MAXFLOAT)))
+        self.viewSize = CGSize(width : screenSize.width, height : labelSize.height + ViewSizes.labelTopOffset + ViewSizes.labelBottomOffset)
+        self.frame = CGRect(x: 0, y: self.currentViewController?.view?.bounds.height ?? screenSize.height, width: self.viewSize.width, height: self.viewSize.height)
+    }
+    
+    func setupConstraints () {
+        self.closeButton.snp.makeConstraints { (make) -> Void in
+            make.right.equalTo(self).offset(0)
+            make.top.equalTo(self).offset(0)
+            make.width.equalTo(ViewSizes.closeButtonSize.width)
+            make.height.equalTo(ViewSizes.closeButtonSize.height)
+        }
+        
+        self.label.snp.makeConstraints{ (make) -> Void in
+            make.left.equalTo(self).offset(ViewSizes.labelLeftOffset)
+            make.right.equalTo(self).offset(-ViewSizes.labelRightOffset)
+            make.top.equalTo(self).offset(ViewSizes.labelTopOffset)
+            make.bottom.equalTo(self).offset(-ViewSizes.labelBottomOffset)
+        }
+    }
+    
+    func setupViewControllerConstraints () {
+        guard let view = self.currentViewController?.view else { return }
+        
+        self.snp.makeConstraints{ (make) -> Void in
+            self.bottomViewConstraint =  make.bottom.equalTo(view.snp.bottom).offset(self.viewSize.height).constraint
+            make.left.equalTo(view).offset(0)
+            make.right.equalTo(view).offset(0)
+            make.height.equalTo(self.viewSize.height)
+        }
+    }
+    
+    func showView (toShow : Bool) {
+        if let controller = self.currentViewController {
+            self.showView(toShow: toShow, in: controller)
+        }
+    }
+    
+    func showView(toShow : Bool, in controller: UIViewController) {
+        guard let view = controller.view else { return }
+        
+        self.bottomViewConstraint?.update(offset: toShow ? 0 : self.viewSize.height)
+        UIView.animate(withDuration: 0.245, animations:
+            { [weak self] in
+                guard let `self` = self else { return }
+                self.alpha = toShow ? 1.0 : 0.0
+                view.layoutIfNeeded()
+        }) { [weak self] (isFinished) in
+            guard let `self` = self else { return }
+            if !toShow { self.removeFromSuperview() }
+        }
+    }
+    
+    func setupTimer (with duration : Double ) {
+        guard let _ = self.timer else {
+            self.timer = Timer.scheduledTimer(timeInterval: duration, target: self, selector: #selector(BottomErrorView.closeButtonDidTouch(_:)), userInfo: nil, repeats: false)
+            return
+        }
+    }
+    
+    @objc func closeButtonDidTouch (_ button : UIButton) {
+        if self.timer != nil {
+            self.timer?.invalidate()
+            self.timer = nil
+        }
+        self.showView(toShow: false)
+    }
+}

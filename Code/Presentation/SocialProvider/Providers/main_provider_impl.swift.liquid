@@ -1,0 +1,32 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+
+class MainProviderImpl: NSObject {
+    
+    let photoDimension: UInt = 500
+    
+    let router              : AppRouterProtocol!
+    var hud                 : HUD!
+    
+    var completion: ((SocialUser, String) -> Void)?
+    var sharingCompletion : ((_ isSuccess : Bool, _ error : Error?) -> Void)?
+    
+    init(router: AppRouterProtocol, hud: HUD) {
+        self.router = router
+        self.hud = hud
+        super.init()
+        self.baseSetup()
+    }
+    
+    func baseSetup () {
+        
+    }
+    
+}

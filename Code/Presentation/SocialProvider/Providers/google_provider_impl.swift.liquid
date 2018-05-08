@@ -1,0 +1,93 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import GoogleSignIn
+
+class GoogleProviderImpl: MainProviderImpl {
+
+    override func baseSetup () {
+        setupGoogleService()
+    }
+    
+}
+
+//MARK: SocialProviderProtocol
+extension GoogleProviderImpl : SocialProviderProtocol {
+    
+    func isUserAlreadyLogged () -> Bool {
+        return false
+    }
+
+    func login (with completion: @escaping (SocialUser, String) -> Void) {
+        self.completion = completion
+        self.login()
+    }
+    
+    func logout () {
+        
+    }
+    
+}
+
+//MARK: GoogleProviderImpl
+extension GoogleProviderImpl {
+    
+    //MARK: Google
+    fileprivate func setupGoogleService() {
+        let signIn = GIDSignIn.sharedInstance()
+        signIn?.clientID = "1006323020947-vqjk40nqv2ovobgpue0fbrs8o897b6m0.apps.googleusercontent.com"
+        signIn?.delegate = self
+        signIn?.uiDelegate = self
+    }
+    
+    fileprivate func login() {
+        GIDSignIn.sharedInstance().signIn()
+        hud.hide()
+    }
+}
+
+
+//MARK: GIDSignInDelegate
+extension GoogleProviderImpl: GIDSignInDelegate {
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if (error == nil) {
+            if let completion = completion {
+                let email = user.profile.email
+                let id = user.userID
+                let firstName = user.profile.givenName
+                let lastName = user.profile.familyName
+                let socialUser = SocialUser(id: id, email: email, firstName: firstName, lastName: lastName, avatarURL: user.profile.imageURL(withDimension: photoDimension))
+                completion(socialUser, user.authentication.accessToken)
+            }
+        } else {
+            hud.hide()
+            print("\(error.localizedDescription)")
+        }
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        hud.hide()
+    }
+}
+
+//MARK: GIDSignInUIDelegate
+extension GoogleProviderImpl: GIDSignInUIDelegate {
+    
+    func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
+        hud.hide()
+        router.presentViewControler(controller: viewController, animated: true)
+    }
+    
+    func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
+        hud.hide()
+        router.dismissCurrentController(animated: true)
+    }
+    
+}

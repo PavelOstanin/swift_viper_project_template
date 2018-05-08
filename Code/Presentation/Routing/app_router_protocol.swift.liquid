@@ -10,7 +10,7 @@ import UIKit
 
 protocol AppRouterProtocol {
     
-    var navigationController: UINavigationController { get }
+    var navigationController: GivingliNavigationController { get }
     
     /// Push module into navigation stack
     ///
@@ -18,7 +18,36 @@ protocol AppRouterProtocol {
     ///   - urn: module urn
     ///   - animated:
     ///   - completion: module completion handler
-    func pushModule(byUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?)
+    func pushModule(byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?)
+    
+    func pushModule(byUrn urn: Any, animated: Bool, isHeroEnabled : Bool, completion: ModuleCompletionHandler?)
+
+    /// Push module on selected tabbar navigation
+    ///
+    /// - Parameters:
+    ///   - urn: module urn
+    ///   - animated:
+    ///   - completion: module completion handler
+//    func pushLocalModule(byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?)
+    
+    /// Push module on presented navigation
+    ///
+    /// - Parameters:
+    ///   - urn: module urn
+    ///   - animated:
+    ///   - completion: module completion handler
+    func pushModuleOnTopNavigation(byUrn urn: Any, animated: Bool, isHeroEnabled : Bool, completion: ModuleCompletionHandler?)
+    
+    /// Push module on Side Menu
+    ///
+    /// - Parameters:
+    ///   - urn: module urn
+    ///   - animated:
+    ///   - completion: module completion handler
+    func showMainScreen(animated: Bool, completion: ModuleCompletionHandler?)
+    
+    func showSideMenu()
+    func closeSideMenu()
     
     /// Set module as navigation stack root (and clear current)
     ///
@@ -26,7 +55,7 @@ protocol AppRouterProtocol {
     ///   - urn: module urn
     ///   - animated:
     ///   - completion: module completion handler
-    func replaceViewStack(rootUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?)
+    func replaceViewStack(rootUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?)
     
     /// Present module on navigation stack
     ///
@@ -34,7 +63,13 @@ protocol AppRouterProtocol {
     ///   - urn: module urn
     ///   - animated:
     ///   - completion: module completion handler
-    func presentModule(byUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?)
+    func presentModule(byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?)
+    func presentModuleWithPushAnimation (byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?) 
+    func presentNavigationModule(byUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?)
+    func presentViewControler(controller: UIViewController, animated: Bool)
+
+    
+    func presentModalViewController(byUrn urn: Any, animated: Bool, isHeroEnabled : Bool, completion: ModuleCompletionHandler?)
     
     /// Pop modules from navigation stack to view controller (module)
     ///
@@ -43,14 +78,39 @@ protocol AppRouterProtocol {
     ///   - animated:
     func popToViewController(_ controller: UIViewController, animated: Bool)
     
-    
     /// Pop top controller from navigation stack
     ///
     /// - Parameter animated:
+    func popToRootController(animated: Bool)
     func popCurrentController(animated: Bool)
+    
+    /// Pop controller on selected tabbar navigation
+    ///
+    /// - Parameters:
+    ///   - urn: module urn
+    ///   - animated:
+    ///   - completion: module completion handler
+//    func popLocalModule(animated: Bool)
+//    func popToRootLocalModule(animated: Bool)
+    
+    
+    /// Pop controller on presented navigation
+    ///
+    /// - Parameters:
+    ///   - urn: module urn
+    ///   - animated:
+    ///   - completion: module completion handler
+    func popModuleOnTopNavigation(animated: Bool)
     
     /// Dismiss controller from navigation stack
     ///
     /// - Parameter animated:
+    func dismissAllModalViewControllersAndShowEventOnTheMap (completion: (() -> Swift.Void)?) 
+    
     func dismissCurrentController(animated: Bool)
+    
+    func dismissCurrentController(animated: Bool, completion: (() -> Swift.Void)?)
+    
+    func dismissCurrentControllerWithPushAnimation (animated: Bool, completion: (() -> Swift.Void)?)
+
 }

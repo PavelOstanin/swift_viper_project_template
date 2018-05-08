@@ -1,0 +1,26 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import Alamofire
+
+class AccessTokenAdapter: RequestAdapter {
+    
+    private var accessToken     : String
+    
+    init(accessToken: String) {
+        self.accessToken = accessToken
+    }
+    
+    func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
+        var urlRequest = urlRequest
+        urlRequest.setValue(accessToken, forHTTPHeaderField: "access-token")
+        return urlRequest
+    }
+    
+}

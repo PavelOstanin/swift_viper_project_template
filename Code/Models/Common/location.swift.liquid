@@ -1,0 +1,43 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import CoreLocation
+
+class Location {
+    
+    var latitude: CLLocationDegrees = 0
+    var longitude: CLLocationDegrees = 0
+    var city: String?
+    var state: String?
+    var country: String?
+    var zip: String?
+    var streetAddress: String?
+   
+    func toJSON() -> Dictionary<String, Any> {
+        var json: Dictionary<String, Any> = ["latitude": latitude, "longitude": longitude]
+        if let cityValue = city {
+            json["city"] = cityValue
+        }
+        if let stateValue = state {
+            json["state"] = stateValue
+        }
+        if let countryValue = country {
+            json["country"] = countryValue
+        }
+        if let zipValue = zip {
+            json["zip"] = zipValue
+        }
+        if let streetAddressValue = streetAddress {
+            json["street_address"] = streetAddressValue
+        }
+        return json
+    }
+    
+}
+

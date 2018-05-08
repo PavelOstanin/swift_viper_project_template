@@ -12,65 +12,253 @@ import Compass
 class AppRouterImpl: AppRouterProtocol {
 
     // MARK:
-    private let modulesList: Array<ModuleFactoryProtocol>
-    private let _navigationController: UINavigationController
-
-    init(withNavigation controller: UINavigationController, modules: Array<ModuleFactoryProtocol>, urlScheme: String) {
+    fileprivate let modulesList             : Array<ModuleFactoryProtocol>
+    fileprivate let _navigationController   : GivingliNavigationController
+//    fileprivate var _tabbarController       : GivingliTabBarController?
+    fileprivate let styleKit                : StyleKit
+    fileprivate let settings                : AppSettingsService
+    
+    fileprivate var notificationCenter: NotificationCenter? = nil
+    
+    init(withNavigation controller: GivingliNavigationController, modules: Array<ModuleFactoryProtocol>, urlScheme: String) {
+        
+        styleKit = PresentationAssembly.shared.styleKit
+        settings = ServicesAssembly.shared.settingsService
         
         _navigationController = controller
         _navigationController.setNavigationBarHidden(true, animated: false)
+        
         modulesList = modules
         
-        Compass.scheme = urlScheme
-        Compass.routes = modulesList.map {
+        Navigator.scheme = urlScheme
+        Navigator.routes = modulesList.map {
             return $0.moduleURN
         }
-
     }
     
     // MARK:
     
-    var navigationController: UINavigationController {
+    var navigationController: GivingliNavigationController {
         return _navigationController
     }
     
-    func pushModule(byUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?) {
+    func pushModule(byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?) {
         
-        guard let url = URL(string:"\(Compass.scheme)\(urn)") else {
+        let (urn, parameters) = urnParameters(for: urn)
+        
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
             fatalError("Invalid URN: \(urn)")
         }
         
-        guard let controller = createModule(byUrl: url, completion: completion) else {
+        guard let controller = createModule(byUrl: url, completion: completion, params: parameters) else {
             fatalError("Can't create controller by URL: \(url)")
         }
         
         navigationController.pushViewController(controller, animated: animated)
     }
     
-    func replaceViewStack(rootUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?) {
+    
+    func pushModule(byUrn urn: Any, animated: Bool, isHeroEnabled : Bool, completion: ModuleCompletionHandler?) {
+        let (urn, parameters) = urnParameters(for: urn)
         
-        guard let url = URL(string:"\(Compass.scheme)\(urn)") else {
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
             fatalError("Invalid URN: \(urn)")
         }
         
-        guard let controller = createModule(byUrl: url, completion: completion) else {
+        if (isHeroEnabled) {
+//            self.navigationController.hero.isEnabled = true
+        }
+        
+        let heroCompletion : ModuleCompletionHandler = { parameters in
+            if let handler = completion {
+                handler(parameters)
+            }
+            if isHeroEnabled {
+//                self?.navigationController.hero.isEnabled = false
+            }
+        }
+        
+        guard let controller = createModule(byUrl: url, completion: heroCompletion, params: parameters) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        
+        navigationController.pushViewController(controller, animated: animated)
+
+    }
+
+    
+    /*
+    func pushLocalModule(byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?) {
+        
+        let (urn, parameters) = urnParameters(for: urn)
+        
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
+        
+        guard let controller = createModule(byUrl: url, completion: completion, params: parameters) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        guard let navigation = tabBar.selectedViewController as? UINavigationController else {
+            fatalError("Can't find navigation controller fo current index \(tabBar.selectedIndex)")
+        }
+        navigation.pushViewController(controller, animated: animated)
+    }
+    */
+    
+    func pushModuleOnTopNavigation(byUrn urn: Any, animated: Bool, isHeroEnabled : Bool, completion: ModuleCompletionHandler?) {
+        
+        let (urn, parameters) = urnParameters(for: urn)
+        
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
+        
+        if (isHeroEnabled) {
+//            self.navigationController.hero.isEnabled = true
+        }
+        
+        let heroCompletion : ModuleCompletionHandler = { parameters in
+            if let handler = completion {
+                handler(parameters)
+            }
+            if isHeroEnabled {
+//                self?.navigationController.hero.isEnabled = false
+            }
+        }
+        
+        guard let controller = createModule(byUrl: url, completion: heroCompletion, params: parameters) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        guard let navigation = topViewController(for: navigationController) as? UINavigationController else {
+            fatalError("Can't find navigation controller fo current index")
+        }
+        navigation.pushViewController(controller, animated: animated)
+    }
+    
+    
+//    func pushModuleOnSideMenu (byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?) {
+//        let (urn, parameters) = urnParameters(for: urn)
+//        
+//        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
+//            fatalError("Invalid URN: \(urn)")
+//        }
+//        
+//        guard let controller = createModule(byUrl: url, completion: completion, params: parameters) else {
+//            fatalError("Can't create controller by URL: \(url)")
+//        }
+//        guard let navigation = topViewController(for: navigationController) as? UINavigationController else {
+//            fatalError("Can't find navigation controller fo current index \(tabBar.selectedIndex)")
+//        }
+//        tabBar.navigationController?.pushViewController(controller, animated: animated)
+//        
+//        //        navigation.pushViewController(controller, animated: animated)
+//    }
+    
+    
+    
+    func showMainScreen(animated: Bool, completion: ModuleCompletionHandler?) {
+        let urn = MainFactory.shared.moduleURN
+        replaceViewStack(rootUrn: urn, animated: animated, completion: completion)
+    }
+    
+    func showSideMenu() {
+//        self.sidePanelController?.showSidePanel()
+    }
+    
+    func closeSideMenu() {
+//        self.sidePanelController?.hideSidePanel()
+    }
+    
+    func replaceViewStack(rootUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?) {
+        
+        let (urn, parameters) = urnParameters(for: urn)
+
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
+        
+        guard let controller = createModule(byUrl: url, completion: completion, params: parameters) else {
             fatalError("Can't create controller by URL: \(url)")
         }
         
         navigationController.setViewControllers([controller], animated: animated)
     }
     
-    func presentModule(byUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?) {
+    func presentModule(byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?) {
+                
+        let (urn, parameters) = urnParameters(for: urn)
         
-        guard let url = URL(string:"\(Compass.scheme)\(urn)") else {
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
+
+        guard let controller = createModule(byUrl: url, completion: completion, params: parameters) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        presentViewControler(controller: controller, animated: false)
+    }
+    
+    func presentModuleWithPushAnimation (byUrn urn: Any, animated: Bool, completion: ModuleCompletionHandler?) {
+        let (urn, parameters) = urnParameters(for: urn)
+        
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
             fatalError("Invalid URN: \(urn)")
         }
         
-        guard let controller = createModule(byUrl: url, completion: completion) else {
+        guard let controller = createModule(byUrl: url, completion: completion, params: parameters) else {
             fatalError("Can't create controller by URL: \(url)")
         }
+        let transition = CATransition()
+            transition.duration = 0.37
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromRight
+            transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+        let topController: UIViewController = topViewController(for: navigationController)
+            topController.view.window?.layer.add(transition, forKey: kCATransition)
+            topController.present(controller, animated: animated, completion: nil)
+    }
+
+    
+    func presentNavigationModule(byUrn urn: String, animated: Bool, completion: ModuleCompletionHandler?) {
+        guard let controller = navigationControllerBy(urn: urn, completion: completion) else {
+            fatalError("Can't create controller by URN: \(urn)")
+        }
+        presentViewControler(controller: controller, animated: animated)
+    }
+    
+    func presentViewControler(controller: UIViewController, animated: Bool) {
+        let topController: UIViewController = topViewController(for: navigationController)
+            topController.present(controller, animated: animated, completion: nil)
+    }
+    
+    func presentModalViewController(byUrn urn: Any, animated: Bool, isHeroEnabled : Bool, completion: ModuleCompletionHandler?) {
+        let (urn, parameters) = urnParameters(for: urn)
         
-        navigationController.present(controller, animated: animated, completion: nil)
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
+        
+        if (isHeroEnabled) {
+//            self.navigationController.hero.isEnabled = true
+        }
+        
+        let heroCompletion : ModuleCompletionHandler = { parameters in
+            if let handler = completion {
+                handler(parameters)
+            }
+            if isHeroEnabled {
+//                self?.navigationController.hero.isEnabled = false
+            }
+        }
+        guard let controller = createModule(byUrl: url, completion: heroCompletion, params: parameters, isPopup: true) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        controller.modalPresentationStyle = .overCurrentContext
+        controller.modalTransitionStyle = .crossDissolve
+//        controller.hero.isEnabled = true
+        
+        presentViewControler(controller: controller, animated: animated)
     }
     
     //
@@ -87,27 +275,158 @@ class AppRouterImpl: AppRouterProtocol {
         navigationController.popToViewController(controller, animated: animated)
     }
     
+//    func popLocalModule(animated: Bool) {
+//        guard let navigation = tabBar.selectedViewController as? UINavigationController else {
+//            fatalError("Can't find navigation controller fo current index \(tabBar.selectedIndex)")
+//        }
+//        navigation.popViewController(animated: animated)
+//    }
+//    
+//    func popToRootLocalModule(animated: Bool) {
+//        guard let navigation = tabBar.selectedViewController as? UINavigationController else {
+//            fatalError("Can't find navigation controller fo current index \(tabBar.selectedIndex)")
+//        }
+//        navigation.popToRootViewController(animated: animated)
+//    }
+    
+    func popModuleOnTopNavigation(animated: Bool) {
+        guard let navigation = topViewController(for: navigationController) as? UINavigationController else {
+            fatalError("Can't find navigation controller fo current index")
+        }
+        navigation.popViewController(animated: animated)
+    }
+    
     func dismissCurrentController(animated: Bool) {
+        self.dismissCurrentController(animated: animated, completion: nil)
+    }
+    
+    func dismissCurrentController(animated: Bool, completion: (() -> Swift.Void)?) {
+        let topController: UIViewController = topViewController(for: navigationController)
+            topController.dismiss(animated: animated, completion: completion)
+    }
+    
+    func dismissCurrentControllerWithPushAnimation (animated: Bool, completion: (() -> Swift.Void)?) {
+        let transition = CATransition()
+            transition.duration = 0.25
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromLeft
+        let topController: UIViewController = topViewController(for: navigationController)
+            topController.view.window!.layer.add(transition, forKey: kCATransition)
+            topController.dismiss(animated: animated, completion: completion)
+    }
+    
+    func dismissAllModalViewControllersAndShowEventOnTheMap (completion: (() -> Swift.Void)?) {
+        let topController: UIViewController = topViewController(for: navigationController)
+            topController.view.window?.rootViewController?.dismiss(animated: true, completion: completion)
+//            topController.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    func dismissAll(animated: Bool) {
         navigationController.dismiss(animated: animated, completion: nil)
     }
     
     // MARK:
     
-    private func createModule(byUrl url: URL, completion: ModuleCompletionHandler?) -> UIViewController? {
+    fileprivate func createModule(byUrl url: URL, completion: ModuleCompletionHandler?, params: NamedValuesType? = nil, isPopup: Bool = false) -> UIViewController? {
         
-        guard let location = Compass.parse(url: url) else {
+        guard let location = Navigator.parse(url: url) else {
             return nil
         }
         
-        let arguments = location.arguments
+        let arguments = params ?? location.arguments
         
         NSLog("Create module with path: '\(location.path)',  arguments: '\(arguments)'")
         
         let factory = modulesList.first {
             return location.path == $0.moduleURN
         }
+//        if isPopup {
+//            return factory?.createPopupModule(arguments: arguments, completion: completion)
+//        } else {
+            return factory?.createModule(arguments: arguments, completion: completion)
+//        }
+    }
+    
+//    //Push Notification Handler
+//    func showModule(for pushType: PushType, notificationPayload: [AnyHashable : Any]) {
+//        var urn: String? = nil
+//        switch pushType {
+//        case .sentMessage:
+//            if let userId = notificationPayload["userId"] as? String, let conversationId = notificationPayload["conversationId"] as? String {
+//                urn = ConversationFactory.shared.createModuleURN(conversationId: conversationId, receivers: userId)
+//            } else if let saleId = notificationPayload["saleId"] as? String, let requestId = notificationPayload["requestId"] as? String {
+//                urn = ChatFactory.shared.createModuleURN(saleId: saleId, requestId: requestId)
+//            }
+//        case .requestForBook, .sellerMarkedBookAsDelivered:
+//            if let requestId = notificationPayload["requestId"] as? String, let saleId = notificationPayload["saleId"] as? String {
+//                urn = ChatFactory.shared.createModuleURN(saleId: saleId, requestId: requestId)
+//            }
+//        case .startedFollow:
+//            if let userId = notificationPayload["userId"] as? String {
+//                urn = ProfileFactory.shared.createModuleURN(userId: userId)
+//            }
+//        case .replyForReview:
+//            if let reviewId = notificationPayload["reviewId"] as? String, let bookId = notificationPayload["bookId"] as? String {
+//                urn = CommentsFactory.shared.createModuleURN(bookId: bookId, reviewId: reviewId)
+//            }
+//        default:
+//            break
+//        }
+//        if let moduleUrn = urn {
+//            self.presentNavigationModule(byUrn: moduleUrn, animated: true) { [weak self] (_) in
+//                self?.dismissCurrentController(animated: true)
+//            }
+//        }
+//    }
+    
+}
+
+extension AppRouterImpl {
+    
+    func topViewController(for viewController: UIViewController) -> UIViewController {
+        guard let presentedController = viewController.presentedViewController else {
+            return viewController
+        }
+        return topViewController(for: presentedController)
+    }
+    
+    func controllerBy(urn: String, completion: ModuleCompletionHandler?) -> UIViewController? {
+        guard let url = URL(string:"\(Navigator.scheme)\(urn)") else {
+            fatalError("Invalid URN: \(urn)")
+        }
         
-        return factory?.createModule(arguments: arguments, completion: completion)
+        guard let controller = createModule(byUrl: url, completion: completion) else {
+            fatalError("Can't create controller by URL: \(url)")
+        }
+        
+        return controller
+    }
+    
+    func navigationControllerBy(urn: String, completion: ModuleCompletionHandler?) -> GivingliNavigationController? {
+        guard let controller = controllerBy(urn: urn, completion: completion) else {
+            fatalError("Can't create controller by URN: \(urn)")
+        }
+        return GivingliNavigationController(rootViewController: controller)
+    }
+    
+    func navigationControllerBy(urn: String) -> GivingliNavigationController? {
+        return navigationControllerBy(urn: urn, completion: nil)
+    }
+        
+}
+
+
+extension AppRouterImpl {
+    
+    func urnParameters(for urn: Any) -> (urn: String, params: NamedValuesType?) {
+        var urnString = urn as? String
+        var parameters: NamedValuesType? = nil
+        if let (urn, params) = urn as? (String, NamedValuesType?) {
+            urnString = urn
+            parameters = params
+        }
+        return (urnString ?? "", parameters)
     }
     
 }

@@ -1,0 +1,89 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import ObjectMapper
+
+class ErrorField: Mappable {
+    
+    var field: String?
+    var msg: String?
+    
+    init() {
+    }
+    
+    required convenience init?(_ map: Map) {
+        self.init()
+    }
+    
+    required init?(map: Map) {
+        mapping(map: map)
+    }
+    
+    func mapping(map: Map) {
+        field <- map["field"]
+        msg <- map["message"]
+    }
+    
+}
+
+class APIError: ApplicationBaseError, Mappable {
+    
+    var errorMessages: [ErrorField] = []
+    
+    var httpCode: Int = 0
+    var serverError: String?
+    
+    init(code: Int, json: Any?) {
+        httpCode = code
+        if let jsonDict = json as? Dictionary<String, Any>, let error = jsonDict["error"] as? Dictionary<String, Any>, let messages = error["messages"] as? Array<Dictionary<String, String>> {
+            var errorFields = [ErrorField]()
+            for dict in messages {
+                guard let field = dict["field"], let msg = dict["message"] else {
+                    continue
+                }
+                let errorField = ErrorField()
+                errorField.field = field
+                errorField.msg = msg
+                errorFields.append(errorField)
+            }
+            errorMessages = errorFields
+        } else if let jsonDict = json as? Dictionary<String, String> {
+            serverError = jsonDict["message"]
+        } else if let jsonDict = json as? Dictionary<String, Any>, let error = jsonDict["error"] as? Dictionary<String, Any>, let messages = error["messages"] as? String {
+            serverError = messages
+        } else {
+            serverError = nil
+        }
+    }
+    
+    var errorDescription: String {
+        if serverError != nil {
+            return serverError!
+        }
+        let messages = errorMessages.compactMap( { $0.msg } )
+        if messages.count > 0 {
+            return messages.joined(separator: "\n")
+        }
+        return "Server error"
+    }
+    
+    var isCancelled: Bool {
+        return false
+    }
+    
+    required init?(map: Map) {
+        mapping(map: map)
+    }
+    
+    func mapping(map: Map) {
+        errorMessages <- map["messages"]
+        serverError <- map["messages"]
+    }
+    
+}

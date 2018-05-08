@@ -1,0 +1,154 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+iimport Foundation
+import CoreLocation
+
+class AppSettingsServiceImpl {
+    
+    // MARK:
+    fileprivate let defaults: AppDefaultSettings
+    fileprivate let userDefaults: UserDefaults
+    
+    // MARK: cached values
+    fileprivate var _authToken: String? = nil
+
+    //MARK: Keys
+    enum Keys : String {
+        case alreadyRun
+        case authToken
+        case userId
+        case userName
+        case accessToken
+        case tokenType
+        case client
+        case expiry
+        case uid
+    }
+    
+    //MARK: Init
+    init() {
+        defaults = AppDefaultSettings()
+        
+        userDefaults = UserDefaults.standard
+        
+        if !alreadyRun {
+            // Delete old stored info
+            clear()
+            
+            alreadyRun = true
+        }
+    }
+    
+}
+
+extension AppSettingsServiceImpl: AppSettingsService {
+    
+    var alreadyRun: Bool {
+        get {
+            return userDefaults.bool(forKey: Keys.alreadyRun.rawValue)
+        }
+        
+        set(value) {
+            userDefaults.set(value, forKey: Keys.alreadyRun.rawValue)
+        }
+    }
+    
+    // Server
+    var endpoint: String {
+        return defaults.endpoint
+    }
+
+    // Debug
+    var isRequestLoggingEnabled: Bool {
+        return defaults.isRequestLoggingEnabled
+    }
+    
+    var isResponseLoggingEnabled: Bool {
+        return defaults.isResponseLoggingEnabled
+    }
+
+    // Auth
+    
+    var username        : String?   {
+        get {
+            return userDefaults.string(forKey: Keys.userName.rawValue)
+        } set (value) {
+            userDefaults.set(value, forKey: Keys.userName.rawValue)
+        }
+    }
+
+    var authToken       : String?   {
+        get {
+            return userDefaults.string(forKey: Keys.authToken.rawValue)
+        } set (value) {
+            userDefaults.set(value, forKey: Keys.authToken.rawValue)
+        }
+    }
+    
+    var accessToken     : String?   {
+        get {
+            return userDefaults.string(forKey: Keys.accessToken.rawValue)
+        } set (value) {
+            userDefaults.set(value, forKey: Keys.accessToken.rawValue)
+        }
+    }
+    
+    var tokenType       : String?{
+        get {
+            return userDefaults.string(forKey: Keys.tokenType.rawValue)
+        } set (value) {
+            userDefaults.set(value, forKey: Keys.tokenType.rawValue)
+        }
+    }
+    
+    var client          : String?{
+        get {
+            return userDefaults.string(forKey: Keys.client.rawValue)
+        } set (value) {
+            userDefaults.set(value, forKey: Keys.client.rawValue)
+        }
+    }
+    
+    var expiry          : String?{
+        get {
+            return userDefaults.string(forKey: Keys.expiry.rawValue)
+        } set (value) {
+            userDefaults.set(value, forKey: Keys.expiry.rawValue)
+        }
+    }
+    
+    var uid             : String?{
+        get {
+            return userDefaults.string(forKey: Keys.uid.rawValue)
+        } set (value) {
+            userDefaults.set(value, forKey: Keys.uid.rawValue)
+        }
+    }
+
+    //MARK: Clear
+    func clear() {
+        authToken = nil
+        username = nil
+        accessToken = nil
+        tokenType = nil
+        client = nil
+        expiry = nil
+        uid = nil
+    }
+
+    // Location
+    var locationAccuracy: CLLocationAccuracy {
+        return defaults.locationAccuracy
+    }
+    
+    var locationDistanceFilter: CLLocationDistance {
+        return defaults.locationDistanceFilter
+    }
+
+}

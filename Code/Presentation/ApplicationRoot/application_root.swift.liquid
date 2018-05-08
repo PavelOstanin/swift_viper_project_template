@@ -12,30 +12,63 @@ class ApplicationRoot: NSObject {
     
     // TODO: Add all application modules here
     let modules : Array<ModuleFactoryProtocol> = [
-    //  ***  example  ***  // ModuleName.shared
     ]
-
+    
     // MARK:
     fileprivate let router: AppRouterProtocol
     fileprivate let whisper: InAppNotificationsProvider
-
-    init(withNavigation navigation: UINavigationController) {
+    fileprivate let notificationCenter: NotificationCenter
+    
+    init(withNavigation navigation: GivingliNavigationController) {
+        
         let services =  ServicesAssembly.shared
         let presentation = PresentationAssembly.shared
-                        
+        
         presentation.setup(withNavigation: navigation, modules: modules, urlScheme: "viper", services: services)
         
         router = presentation.router
         whisper = presentation.whisper
-        
+        notificationCenter = NotificationCenter.default
         super.init()
-    }
+        setupAppearance(styleKit: presentation.styleKit)
+        
+        notificationCenter.addObserver(self, selector: #selector(didUserLogOut), name: Notifications.userLoggedOut, object: nil)
 
+    }
+    
     func start() {
-        let urn = StartScreenFactory.shared.moduleURN
-        router.pushModule(byUrn: urn, animated: true, completion: { (_) in
-            //completion
-        })
+        let settingsService = ServicesAssembly.shared.settingsService
+        let token = settingsService.authToken
+        if token != nil {
+            router.showMainScreen(animated: false, completion: nil)
+        } else {
+            let urn = LoginFactory.shared.moduleURN
+            self.router.pushModule(byUrn: urn, animated: true, completion: nil)
+        }
+    }
+    
+    fileprivate func setupAppearance(styleKit: StyleKit) {
+        if let color = UIColor(hexString: "#07C881") {
+            let generalAppearance = UINavigationBar.appearance()
+            generalAppearance.setBackgroundImage(UIImage(), for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
+            generalAppearance.shadowImage = UIImage()
+            generalAppearance.tintColor = color
+            generalAppearance.barTintColor = UIColor(hexString: "#FAFAFA")
+            generalAppearance.isTranslucent = false
+            generalAppearance.clipsToBounds = false
+        }
+    }
+    
+}
+
+extension ApplicationRoot {
+    
+    @objc func didUserLogOut() {
+        NSLog("AppRoot->didUserLogOut")
+        DispatchQueue.main.async {
+//            let urn = StartScreenFactory.shared.moduleURN
+//            self.router.replaceViewStack(rootUrn: urn, animated: true, completion: nil)
+        }
     }
 
 }

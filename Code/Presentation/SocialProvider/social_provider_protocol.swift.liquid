@@ -1,0 +1,28 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+protocol SocialProviderProtocol {
+
+    func isUserAlreadyLogged () -> Bool
+    
+    func login (with completion: @escaping (SocialUser, String) -> Void)
+
+    func loginWithPublishActions (with completion: @escaping (SocialUser, String) -> Void)
+
+    func logout ()
+
+}
+
+extension SocialProviderProtocol {
+    
+    func loginWithPublishActions (with completion: @escaping (SocialUser, String) -> Void) {}
+    
+}

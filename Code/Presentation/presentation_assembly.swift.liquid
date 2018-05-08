@@ -14,10 +14,18 @@ class PresentationAssembly: PresentationAssemblyProtocol {
     
     var router: AppRouterProtocol!
     var whisper: InAppNotificationsProvider!
+    var socialService: SocialProvider!
+    var styleKit: StyleKit!
+    var hud: HUD!
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    func setup(withNavigation navigation: UINavigationController, modules: Array<ModuleFactoryProtocol>, urlScheme: String, services: ServicesAssemblyProtocol) {
+    func setup(withNavigation navigation: AppNavigationController, modules: Array<ModuleFactoryProtocol>, urlScheme: String, services: ServicesAssemblyProtocol) {
+        styleKit = DefaultAppStyle()
         router = AppRouterImpl(withNavigation: navigation, modules: modules, urlScheme: urlScheme)
         whisper = InAppNotificationsProviderImpl(withNavigation: navigation)
+        hud = HUDImpl(style: styleKit)
+        socialService = SocialProvider(router: router, hud: hud)
     }
     
 }

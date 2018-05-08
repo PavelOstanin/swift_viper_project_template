@@ -1,0 +1,40 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import SVProgressHUD
+
+class HUDImpl {
+    
+    var styleKit: StyleKit
+    
+    init(style: StyleKit) {
+        styleKit = style
+        SVProgressHUD.setDefaultStyle(.custom)
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setForegroundColor(styleKit.hudForegroundColor)
+        SVProgressHUD.setBackgroundColor(styleKit.hudBackgroundColor)
+    }
+    
+}
+
+extension HUDImpl: HUD {
+    
+    func show() {
+        SVProgressHUD.show()
+    }
+    
+    func hide() {
+        SVProgressHUD.dismiss()
+    }
+    
+    var isVisible: Bool {
+        return SVProgressHUD.isVisible()
+    }
+    
+}

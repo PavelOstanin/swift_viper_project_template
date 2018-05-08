@@ -6,12 +6,12 @@
 //  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-protocol InAppNotificationsProvider {
+protocol HUD {
     
-    func showAPIError(_ err: Error, controller: UIViewController)
-    func showGlobalMessage (_ message: String?, controller: UIViewController)
+    func show()
+    func hide()
+    var isVisible: Bool { get }
     
 }
-

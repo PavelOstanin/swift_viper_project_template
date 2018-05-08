@@ -8,11 +8,8 @@
 
 import Foundation
 
-protocol PresentationAssemblyProtocol {
-    
-    var router: AppRouterProtocol! { get }
-    var whisper: InAppNotificationsProvider! { get }
-    var socialService: SocialProvider! { get }
-    var styleKit: StyleKit! { get }
+protocol LocationService {
 
+    func getUserLocation(completion: @escaping (Location?, ApplicationError?) -> Void)
+    
 }

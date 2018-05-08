@@ -11,12 +11,19 @@ import PromiseKit
 
 class APIServiceImpl {
     
+    fileprivate var settingsService: AppSettingsService
+    fileprivate var notificationCenter: NotificationCenter
+    
     fileprivate let executor: RequestExecutor
     fileprivate let builder: RequestBuilder
-    
-    init() {
-        builder = RequestBuilder()
-        executor = RequestExecutor(requestBuilder: builder)        
+
+    init(settingsService: AppSettingsService) {
+        self.settingsService = settingsService
+        self.notificationCenter = NotificationCenter.default
+        
+        builder = RequestBuilder(endpoint: settingsService.endpoint)
+        executor = RequestExecutor(requestBuilder: builder, settings: settingsService)
+        
     }
     
 }

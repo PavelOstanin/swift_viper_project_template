@@ -1,0 +1,124 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import CoreLocation
+
+class LocationServiceImpl: NSObject, LocationService {
+    
+    fileprivate var settingsService: AppSettingsService!
+    fileprivate var locationCompletion: ((Location?, ApplicationError?) -> Void)?
+    fileprivate lazy var locationManager: CLLocationManager! = {
+        let manager = CLLocationManager()
+        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        manager.distanceFilter = 10
+        manager.delegate = self
+        return manager
+    }()
+    fileprivate lazy var geocoder: CLGeocoder! = {
+        let geocoder = CLGeocoder()
+        return geocoder
+    }()
+
+    init(settingsService: AppSettingsService) {
+        self.settingsService = settingsService
+    }
+    
+    func getUserLocation(completion: @escaping (Location?, ApplicationError?) -> Void) {
+        
+        if CLLocationManager.locationServicesEnabled() {
+            
+            locationCompletion = completion
+            
+            let status = CLLocationManager.authorizationStatus()
+            if status == .denied {
+                finishWithError(err: ApplicationError.locationDisabled)
+            } else if status == .notDetermined {
+                locationManager.requestWhenInUseAuthorization()
+            } else {
+                locationManager.requestLocation()
+            }
+        } else {
+            finishWithError(err: ApplicationError.locationDisabled)
+        }
+        
+    }
+    
+}
+
+extension LocationServiceImpl: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if locationCompletion != nil {
+            if status == .authorizedWhenInUse {
+                locationManager.requestLocation()
+            } else if status == .denied || status == .restricted {
+                finishWithError(err: ApplicationError.locationDisabled)
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        finishWithError()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            obtainPlacemarkWith(location: location)
+        } else {
+            finishWithError()
+        }
+    }
+    
+}
+
+extension LocationServiceImpl {
+    
+    func obtainPlacemarkWith(location: CLLocation) {
+        geocoder.reverseGeocodeLocation(location) { (placemarkResult, error) in
+            self.complete(with: placemarkResult)
+        }
+    }
+    
+    func complete(with placemarks: [CLPlacemark]?) {
+        if let placemark = placemarks?.first {
+            let location = Location()
+            location.latitude = placemark.location?.coordinate.latitude ?? 0
+            location.longitude = placemark.location?.coordinate.longitude ?? 0
+            location.country = placemark.country
+            location.city = placemark.locality
+            location.state = placemark.administrativeArea
+            location.zip = placemark.postalCode
+            var addressComponents = Array<String>()
+            if let streetAddress = placemark.thoroughfare {
+                addressComponents.append(streetAddress)
+            }
+            if let buildingNumber = placemark.subThoroughfare {
+                addressComponents.append(buildingNumber)
+            }
+            location.streetAddress = addressComponents.joined(separator: " ")
+            if let completion = locationCompletion {
+                completion(location, nil)
+            }
+            locationCompletion = nil
+        } else {
+            finishWithError()
+        }
+    }
+    
+    func finishWithError() {
+        finishWithError(err: ApplicationError.locationCantBeObtained)
+    }
+
+    func finishWithError(err: ApplicationError) {
+        if let completion = locationCompletion {
+            completion(nil, err)
+        }
+        locationCompletion = nil
+    }
+}

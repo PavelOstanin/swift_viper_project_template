@@ -1,0 +1,55 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import PromiseKit
+
+protocol ErrorStringConvertible {
+    var errorDescription: String { get }
+}
+
+protocol ApplicationBaseError: CancellableError, ErrorStringConvertible {}
+
+enum ApplicationError: ApplicationBaseError  {
+    
+    case invalidJSON
+    case invalidRequest
+    case notAuthorized
+    case invalidResponse
+    case locationDisabled
+    case locationCantBeObtained
+    case accessTokenIsUnavailable
+    case serverError(String?)
+    
+    var errorDescription: String {
+        switch self {
+        case .invalidJSON:
+            return "Invalid JSON"
+        case .invalidRequest:
+            return "Invalid Request"
+        case .notAuthorized:
+            return "Not Authorized"
+        case .invalidResponse:
+            return "Invalid Response"
+        case .locationDisabled:
+            return "Please allow Givingli to use your location when using"
+        case .locationCantBeObtained:
+            return "Error while getting location"
+        case .accessTokenIsUnavailable:
+            return "Access token is unavailable"
+        case .serverError(let msg):
+            return msg ?? "Unknown server error"
+        }
+    }
+
+    var isCancelled: Bool {
+        return false
+    }
+    
+}
+

@@ -1,0 +1,39 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+
+extension UIFont {
+    
+    open class func appFont(ofSize fontSize: CGFloat, weight: UIFont.Weight) -> UIFont {
+        
+        var fontName = "FontName"
+        
+        switch weight {
+        case .regular:
+            fontName += "-Regular"
+            break
+        case .heavy:
+            fontName += "-ExtraBold"
+            break
+        case .light:
+            fontName += "-Light"
+            break
+        case .semibold:
+            fontName += "-SemiBold"
+            break
+        case .bold:
+            fontName += "-Bold"
+            break
+        default:
+            break
+        }
+        return UIFont.init(name: fontName, size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: weight)
+    }
+}
+

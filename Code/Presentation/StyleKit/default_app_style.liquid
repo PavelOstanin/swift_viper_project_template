@@ -7,12 +7,17 @@
 //
 
 import Foundation
+import UIKit
 
-protocol PresentationAssemblyProtocol {
+struct DefaultAppStyle: StyleKit {
     
-    var router: AppRouterProtocol! { get }
-    var whisper: InAppNotificationsProvider! { get }
-    var socialService: SocialProvider! { get }
-    var styleKit: StyleKit! { get }
+    // HUD
+    var hudForegroundColor: UIColor {
+        return UIColor.darkGray
+    }
+    
+    var hudBackgroundColor: UIColor {
+        return UIColor.white
+    }
 
 }

@@ -1,0 +1,89 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+
+@IBDesignable
+class SocialNetworkButton: UIButton {
+    
+    var buttonShadowColor : UIColor = .clear
+    
+    @IBInspectable var buttonColor : UIColor = .black
+    @IBInspectable var buttonSelectedColor : UIColor = .black
+
+    @IBInspectable var buttonTitleColor : UIColor = .white
+    @IBInspectable var buttonSelectedTitleColor : UIColor = .lightGray
+    
+    let buttonFont = UIFont.appFont(ofSize: 12, weight: .semibold)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+    }
+    
+    override var isHighlighted: Bool {
+        get {
+            return super.isHighlighted
+        } set {
+            super.isHighlighted = newValue
+        }
+    }
+    
+    override var isSelected: Bool {
+        get {
+            return super.isSelected
+        } set {
+            self.layer.backgroundColor = newValue ? buttonSelectedColor.cgColor : buttonColor.cgColor
+            super.isSelected = newValue
+        }
+    }
+    
+    override func draw(_ rect: CGRect) {
+        self.layer.cornerRadius = frame.height / 2
+        
+        self.layer.shadowColor = buttonShadowColor.cgColor
+        self.layer.shadowOffset = CGSize(width : 0.0, height: 3.0)
+        self.layer.shadowOpacity = 1.0
+        self.layer.shadowRadius = 8.0
+        
+        self.layer.backgroundColor = buttonColor.cgColor
+        
+        self.showsTouchWhenHighlighted = true
+        
+        self.setTitleColor(buttonTitleColor, for: .normal)
+        self.setTitleColor(buttonTitleColor, for: .highlighted)
+        self.setTitleColor(buttonSelectedTitleColor, for: .selected)
+        
+        self.contentHorizontalAlignment = .center
+        self.contentVerticalAlignment = .center
+        
+        self.imageView?.contentMode = .scaleAspectFit
+        
+
+        let title = self.title(for: .normal) ?? ""
+        let image = self.image(for: .normal)
+        self.setImage(image, for: .normal)
+        self.setImage(image, for: .highlighted)
+        self.setImage(image, for: .selected)
+        self.setTitle("  " + title, for: .normal)
+
+        self.titleLabel?.font = buttonFont
+        self.titleLabel?.numberOfLines = 1
+        self.titleLabel?.adjustsFontSizeToFitWidth = true
+        self.titleLabel?.lineBreakMode = .byClipping
+        
+
+        self.imageView?.contentMode = .scaleAspectFit
+        
+
+    }
+    
+}

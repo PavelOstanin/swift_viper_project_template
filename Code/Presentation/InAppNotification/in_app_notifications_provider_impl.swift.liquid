@@ -13,46 +13,51 @@ class InAppNotificationsProviderImpl {
     let msgTimeout = 3.0
     let errTimeout = 5.0
     
-    init(withNavigation controller: UINavigationController) {
+    init(withNavigation controller: GivingliNavigationController) {
         navigation = controller
     }
     
-    let navigation: UINavigationController
+    let navigation: GivingliNavigationController
 }
 
 extension InAppNotificationsProviderImpl: InAppNotificationsProvider {
     
-    func showError(err: Error) {
-        showErrorMessage(msg: errorText(err: err))
+    func showAPIError(_ err: Error, controller: UIViewController) {
+        guard let showErrorController = controller as? ShowErrorProtocol,
+            let apiError = err as? APIError
+            else {
+                var message: String = ""
+                if let bookisError = err as? ApplicationBaseError {
+                    message = bookisError.errorDescription
+                } else {
+                    message = errorText(err: err)
+                }
+                showGlobalError(message: message, on: controller)
+                return
+        }
+        
+        if !showErrorController.showError(apiError) {
+            showGlobalError(message: apiError.errorDescription, on: controller)
+        }
     }
     
-    //
-    
-    func showErrorMessage(msg: String) {
-        showMessage(title: "Error", msg: msg)
+    func showGlobalMessage (_ message: String?, controller: UIViewController) {
+        guard let message = message else {
+            return
+        }
+        showGlobalError(message: message, on: controller)
     }
-    
-    func showWarningMessage(msg: String) {
-        showMessage(title: "Warning", msg: msg)
-    }
-    
-    func showInfoMessage(msg: String) {
-        showMessage(title: "Info", msg: msg)
-    }
-    
+
 }
 
 extension InAppNotificationsProviderImpl {
     
-    func showMessage(title: String, msg: String) {
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(alertAction)
-        navigation.present(alert, animated: true, completion: nil)
-    }
-    
     func errorText(err: Error) -> String {
         return err.localizedDescription
+    }
+    
+    func showGlobalError(message: String, on controller: UIViewController, with duration : Double = 3.0) {
+        BottomErrorView.show(message: message, controller: controller, with : duration)
     }
     
 }

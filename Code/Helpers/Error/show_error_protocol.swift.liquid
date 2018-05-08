@@ -1,0 +1,41 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+protocol ShowErrorProtocol {
+    
+    var textFields: [UITextField] { get }
+    func showError(_ error: APIError) -> Bool
+    
+}
+
+extension ShowErrorProtocol {
+    
+    func showError(_ error: APIError) -> Bool {
+        let fields = textFields
+        if fields.count > 0 {
+            var isErrorShown = false
+            //TODO: fix when textfield is ready
+//            for textField in textFields {
+//                if let message = error.errorMessages.filter({ (errorField) -> Bool in
+//                    return false
+//                    return errorField.field == textField.type.string
+//                }).first {
+//                    textField.showErrorMessageUnderTextField(errorMessage: message.msg ?? L10n.errorInvalidField)
+//                    isErrorShown = true
+//                }
+//            }
+            return isErrorShown
+        } else {
+            return false
+        }
+    }
+    
+}

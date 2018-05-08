@@ -1,0 +1,38 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+import CoreLocation
+
+protocol AppSettingsService {
+    
+    var alreadyRun: Bool { get }
+    
+    // Server
+    var endpoint: String { get }
+    
+    // Debug
+    var isRequestLoggingEnabled: Bool { get }
+    var isResponseLoggingEnabled: Bool { get }
+    
+    // Auth
+    var authToken       : String?   { get set } //Our web token
+    var username        : String?   { get set }
+    var accessToken     : String?   { get set } //Social token or email/phone for registration
+    var tokenType       : String?   { get set }
+    var client          : String?   { get set }
+    var expiry          : String?   { get set }
+    var uid             : String?   { get set }
+
+    func clear()
+    
+    // Location
+    var locationAccuracy: CLLocationAccuracy { get }
+    var locationDistanceFilter: CLLocationDistance { get }
+
+}

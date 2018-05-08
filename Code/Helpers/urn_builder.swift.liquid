@@ -1,0 +1,41 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+
+struct URNBuilder {
+    
+    let urn: String
+    
+    init(string: String) {
+        urn = string
+    }
+    
+    func buildWithArgs(args: Array<String>) -> String {
+        let components = urn.components(separatedBy: ":")
+        
+        var indx = 0
+        var result = ""
+        
+        for part in components {
+            if !result.isEmpty {
+                result += ":"
+            }
+            if part.hasPrefix("{") && indx < args.count {
+                result += args[indx]
+                indx += 1
+            } else {
+                
+                result += part
+            }
+        }
+        
+        return result
+    }
+}
+

@@ -1,0 +1,36 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import Foundation
+
+class SocialUser {
+    
+    var email: String? = nil
+    var id: String = ""
+    var firstName: String? = nil
+    var lastName: String? = nil
+    var avatarURL: URL? = nil
+    
+    init(id: String?) {
+        self.id = id ?? "unknown"
+    }
+    
+    convenience init(id: String?, email: String?) {
+        self.init(id: id)
+        self.email = email
+    }
+    
+    convenience init(id: String?, email: String?, firstName: String?, lastName: String?, avatarURL: URL?) {
+        self.init(id: id, email: email)
+        self.firstName = firstName
+        self.lastName = lastName
+        self.avatarURL = avatarURL
+    }
+    
+}
+

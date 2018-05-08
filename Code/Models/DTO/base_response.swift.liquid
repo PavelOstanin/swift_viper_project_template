@@ -1,0 +1,92 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import ObjectMapper
+
+class Response: Mappable {
+    
+    var code    : Int = 0
+    var error   : APIError?
+    
+    required init?(map: Map) {
+        mapping(map: map)
+    }
+    
+    func mapping(map: Map) {
+        code    <- map["code"]
+        error   <- map["error"]
+    }
+    
+}
+
+class PhotoResponse: Response {
+
+    var url: String?
+
+    required init?(map: Map) {
+        super.init(map: map)
+        mapping(map: map)
+    }
+
+    override func mapping(map: Map) {
+        url <- map["result.image"]
+    }
+
+}
+
+class BaseResponse<T: Mappable>: Response {
+    
+    var result: T?
+    
+    required init?(map: Map) {
+        super.init(map: map)
+        mapping(map: map)
+    }
+    
+    override func mapping(map: Map) {
+        super.mapping(map: map)
+        result <- map["result"]
+    }
+    
+}
+
+class BasePageResponse<T: Mappable>: Response {
+    
+    var array: [T] = []
+    var pagination: Pagination?
+    
+    required init?(map: Map) {
+        super.init(map: map)
+        mapping(map: map)
+    }
+    
+    override func mapping(map: Map) {
+        super.mapping(map: map)
+        array <- map["result"]
+        pagination <- map["pagination"]
+    }
+    
+}
+
+class BaseArrayResponse<T: Mappable>: Response {
+    
+    var result: [T]?
+    
+    required init?(map: Map) {
+        super.init(map: map)
+        mapping(map: map)
+    }
+    
+    override func mapping(map: Map) {
+        super.mapping(map: map)
+        result <- map["result"]
+    }
+    
+}
+
+
