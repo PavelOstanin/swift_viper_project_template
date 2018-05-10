@@ -9,96 +9,97 @@ license: "MIT"
 
 code_files:
 # Presentation
-- {name: Presentation/PresentationAssemblyProtocol.swift,   path: Code/Presentation/presentation_assembly_protocol.swift.liquid, custom_name: "{{ prefix }}PresentationAssemblyProtocol.swift"}
-- {name: Presentation/PresentationAssembly.swift,           path: Code/Presentation/presentation_assembly.swift.liquid, custom_name: "{{ prefix }}PresentationAssembly.swift"}
+- {name: Presentation/PresentationAssemblyProtocol.swift,   path: Code/Presentation/presentation_assembly_protocol.swift.liquid, custom_name: "PresentationAssemblyProtocol.swift"}
+- {name: Presentation/PresentationAssembly.swift,           path: Code/Presentation/presentation_assembly.swift.liquid, custom_name: "PresentationAssembly.swift"}
 
 # Presentation/Routing
-- {name: Presentation/Routing/AppRouterProtocol.swift,       path: Code/Presentation/Routing/app_router_protocol.swift.liquid, custom_name: "{{ prefix }}AppRouterProtocol.swift"}
-- {name: Presentation/Routing/AppRouter.swift,               path: Code/Presentation/Routing/app_router.swift.liquid, custom_name: "{{ prefix }}AppRouter.swift"}
-- {name: Presentation/Routing/ModuleFactoryProtocol.swift,   path: Code/Presentation/Routing/module_factory_protocol.swift.liquid, custom_name: "{{ prefix }}ModuleFactoryProtocol.swift"}
-- {name: Presentation/Routing/ModuleInputProtocol.swift,     path: Code/Presentation/Routing/module_input_protocol.swift.liquid, custom_name: "{{ prefix }}ModuleInputProtocol.swift"}
-- {name: Presentation/Routing/AppNavigationController.swift, path: Code/Presentation/Routing/app_navigation_controller.swift.liquid, custom_name: "{{ prefix }}AppNavigationController.swift"}
+- {name: Presentation/Routing/AppRouterProtocol.swift,       path: Code/Presentation/Routing/app_router_protocol.swift.liquid, custom_name: "AppRouterProtocol.swift"}
+- {name: Presentation/Routing/AppRouter.swift,               path: Code/Presentation/Routing/app_router.swift.liquid, custom_name: "AppRouter.swift"}
+- {name: Presentation/Routing/ModuleFactoryProtocol.swift,   path: Code/Presentation/Routing/module_factory_protocol.swift.liquid, custom_name: "ModuleFactoryProtocol.swift"}
+- {name: Presentation/Routing/ModuleInputProtocol.swift,     path: Code/Presentation/Routing/module_input_protocol.swift.liquid, custom_name: "ModuleInputProtocol.swift"}
+- {name: Presentation/Routing/AppNavigationController.swift, path: Code/Presentation/Routing/app_navigation_controller.swift.liquid, custom_name: "AppNavigationController.swift"}
 
 # Presentation/ApplicationRoot
-- {name: Presentation/ApplicationRoot/ApplicationRoot.swift,    path: Code/Presentation/ApplicationRoot/application_root.swift.liquid, custom_name: "{{ prefix }}ApplicationRoot.swift"}
+- {name: Presentation/ApplicationRoot/ApplicationRoot.swift,    path: Code/Presentation/ApplicationRoot/application_root.swift.liquid, custom_name: "ApplicationRoot.swift"}
 
 # Presentation/InAppNotification
-- {name: Presentation/InAppNotifications/InAppNotificationsProvider.swift,  path: Code/Presentation/InAppNotification/in_app_notifications_provider.swift.liquid, custom_name: "{{ prefix }}InAppNotificationsProvider.swift"}
-- {name: Presentation/InAppNotifications/InAppNotificationsProviderImpl.swift,    path: Code/Presentation/InAppNotification/in_app_notifications_provider_impl.swift.liquid, custom_name: "{{ prefix }}InAppNotificationsProviderImpl.swift"}
+- {name: Presentation/InAppNotifications/InAppNotificationsProvider.swift,  path: Code/Presentation/InAppNotification/in_app_notifications_provider.swift.liquid, custom_name: "InAppNotificationsProvider.swift"}
+- {name: Presentation/InAppNotifications/InAppNotificationsProviderImpl.swift,    path: Code/Presentation/InAppNotification/in_app_notifications_provider_impl.swift.liquid, custom_name: "InAppNotificationsProviderImpl.swift"}
 
 # Presentation/HUD
-- {name: Presentation/HUD/HUD.swift,       path: Code/Presentation/HUD/hud.swift.liquid, custom_name: "{{ prefix }}HUD.swift"}
-- {name: Presentation/HUD/HUDImpl.swift,   path: Code/Presentation/HUD/hud_impl.swift.liquid, custom_name: "{{ prefix }}HUDImpl.swift"}
+- {name: Presentation/HUD/HUD.swift,       path: Code/Presentation/HUD/hud.swift.liquid, custom_name: "HUD.swift"}
+- {name: Presentation/HUD/HUDImpl.swift,   path: Code/Presentation/HUD/hud_impl.swift.liquid, custom_name: "HUDImpl.swift"}
 
 # Presentation/StyleKit
-- {name: Presentation/StyleKit/StyleKit.swift,        path: Code/Presentation/StyleKit/style_kit.swift.liquid, custom_name: "{{ prefix }}StyleKit.swift"}
-- {name: Presentation/StyleKit/DefaultAppStyle.swift, path: Code/Presentation/StyleKit/default_app_style.liquid, custom_name: "{{ prefix }}DefaultAppStyle.swift"}
+- {name: Presentation/StyleKit/StyleKit.swift,        path: Code/Presentation/StyleKit/style_kit.swift.liquid, custom_name: "StyleKit.swift"}
+- {name: Presentation/StyleKit/DefaultAppStyle.swift, path: Code/Presentation/StyleKit/default_app_style.liquid, custom_name: "DefaultAppStyle.swift"}
 
 # Presentation/SocialProviders
-- {name: Presentation/SocialProvider/SocialProviderProtocol.swift,        path: Code/Presentation/SocialProvider/social_provider_protocol.swift.liquid, custom_name: "{{ prefix }}SocialProviderProtocol.swift"}
-- {name: Presentation/SocialProvider/SocialProvider.swift,                path: Code/Presentation/SocialProvider/social_provider.swift.liquid, custom_name: "{{ prefix }}SocialProvider.swift"}
-- {name: Presentation/SocialProvider/Providers/MainProviderImpl.swift,    path: Code/Presentation/SocialProvider/Providers/main_provider_impl.swift.liquid, custom_name: "{{ prefix }}MainProviderImpl.swift"}
-- {name: Presentation/SocialProvider/Providers/FacebookProviderImpl.swift,path: Code/Presentation/SocialProvider/Providers/facebook_provider_impl.swift.liquid, custom_name: "{{ prefix }}FacebookProviderImpl.swift"}
-- {name: Presentation/SocialProvider/Providers/GoogleProviderImpl.swift,  path: Code/Presentation/SocialProvider/Providers/google_provider_impl.swift.liquid, custom_name: "{{ prefix }}GoogleProviderImpl.swift"}
+- {name: Presentation/SocialProvider/SocialProviderProtocol.swift,        path: Code/Presentation/SocialProvider/social_provider_protocol.swift.liquid, custom_name: "SocialProviderProtocol.swift"}
+- {name: Presentation/SocialProvider/SocialProvider.swift,                path: Code/Presentation/SocialProvider/social_provider.swift.liquid, custom_name: "SocialProvider.swift"}
+- {name: Presentation/SocialProvider/Providers/MainProviderImpl.swift,    path: Code/Presentation/SocialProvider/Providers/main_provider_impl.swift.liquid, custom_name: "MainProviderImpl.swift"}
+- {name: Presentation/SocialProvider/Providers/FacebookProviderImpl.swift,path: Code/Presentation/SocialProvider/Providers/facebook_provider_impl.swift.liquid, custom_name: "FacebookProviderImpl.swift"}
+- {name: Presentation/SocialProvider/Providers/GoogleProviderImpl.swift,  path: Code/Presentation/SocialProvider/Providers/google_provider_impl.swift.liquid, custom_name: "GoogleProviderImpl.swift"}
 
 
 # Services
-- {name: Services/ServicesAssemblyProtocol.swift,   path: Code/Services/services_assembly_protocol.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyProtocol.swift"}
-- {name: Services/ServicesAssembly.swift,           path: Code/Services/services_assembly.swift.liquid, custom_name: "{{ prefix }}ServicesAssembly.swift"}
-- {name: Services/ServicesAssemblyImpl.swift,       path: Code/Services/services_assembly_impl.swift.liquid, custom_name: "{{ prefix }}ServicesAssemblyImpl.swift"}
+- {name: Services/ServicesAssemblyProtocol.swift,   path: Code/Services/services_assembly_protocol.swift.liquid, custom_name: "ServicesAssemblyProtocol.swift"}
+- {name: Services/ServicesAssembly.swift,           path: Code/Services/services_assembly.swift.liquid, custom_name: "ServicesAssembly.swift"}
+- {name: Services/ServicesAssemblyImpl.swift,       path: Code/Services/services_assembly_impl.swift.liquid, custom_name: "ServicesAssemblyImpl.swift"}
 
 # Services/APIService
-- {name: Services/APIService/APIService.swift,   path: Code/Services/APIService/api_service.swift.liquid, custom_name: "{{ prefix }}APIService.swift"}
-- {name: Services/APIService/APIServiceImpl.swift,           path: Code/Services/APIService/api_service_impl.swift.liquid, custom_name: "{{ prefix }}APIServiceImpl.swift"}
-- {name: Services/APIService/RequestBuilder.swift,       path: Code/Services/APIService/request_builder.swift.liquid, custom_name: "{{ prefix }}RequestBuilder.swift"}
-- {name: Services/APIService/RequestExecutor.swift,           path: Code/Services/APIService/request_executor.swift.liquid, custom_name: "{{ prefix }}RequestExecutor.swift"}
-- {name: Services/APIService/RequestExecutorExtension.swift,       path: Code/Services/APIService/request_executor_extension.swift.liquid, custom_name: "{{ prefix }}RequestExecutorExtension.swift"}
+- {name: Services/APIService/APIService.swift,   path: Code/Services/APIService/api_service.swift.liquid, custom_name: "APIService.swift"}
+- {name: Services/APIService/APIServiceImpl.swift,           path: Code/Services/APIService/api_service_impl.swift.liquid, custom_name: "APIServiceImpl.swift"}
+- {name: Services/APIService/RequestBuilder.swift,       path: Code/Services/APIService/request_builder.swift.liquid, custom_name: "RequestBuilder.swift"}
+- {name: Services/APIService/RequestExecutor.swift,           path: Code/Services/APIService/request_executor.swift.liquid, custom_name: "RequestExecutor.swift"}
+- {name: Services/APIService/RequestExecutorExtension.swift,       path: Code/Services/APIService/request_executor_extension.swift.liquid, custom_name: "RequestExecutorExtension.swift"}
 
 # Services/Settings
-- {name: Services/Settings/AppDefaultSettings.swift,      path: Code/Services/Settings/app_default_settings.swift.liquid, custom_name: "{{ prefix }}AppDefaultSettings.swift"}
-- {name: Services/Settings/AppSettingsServiceImpl.swift,  path: Code/Services/Settings/app_settings_service_impl.swift.liquid, custom_name: "{{ prefix }}AppSettingsServiceImpl.swift"}
-- {name: Services/Settings/AppSettingsService.swift,      path: Code/Services/Settings/app_settings_service.swift.liquid, custom_name: "{{ prefix }}AppSettingsService.swift"}
+- {name: Services/Settings/AppDefaultSettings.swift,      path: Code/Services/Settings/app_default_settings.swift.liquid, custom_name: "AppDefaultSettings.swift"}
+- {name: Services/Settings/AppSettingsServiceImpl.swift,  path: Code/Services/Settings/app_settings_service_impl.swift.liquid, custom_name: "AppSettingsServiceImpl.swift"}
+- {name: Services/Settings/AppSettingsService.swift,      path: Code/Services/Settings/app_settings_service.swift.liquid, custom_name: "AppSettingsService.swift"}
 
 # Services/Location
-- {name: Services/Location/LocationServiceImpl.swift,    path: Code/Services/Location/location_service_impl.swift.liquid, custom_name: "{{ prefix }}LocationServiceImpl.swift"}
-- {name: Services/Location/LocationService.swift,        path: Code/Services/Location/location_service.swift.liquid, custom_name: "{{ prefix }}LocationService.swift"}
+- {name: Services/Location/LocationServiceImpl.swift,    path: Code/Services/Location/location_service_impl.swift.liquid, custom_name: "LocationServiceImpl.swift"}
+- {name: Services/Location/LocationService.swift,        path: Code/Services/Location/location_service.swift.liquid, custom_name: "LocationService.swift"}
 
 # Constants
-- {name: Constants/Constants.swift,   path: Code/Constants/constants.swift.liquid, custom_name: "{{ prefix }}Constants.swift"}
+- {name: Constants/Constants.swift,   path: Code/Constants/constants.swift.liquid, custom_name: "Constants.swift"}
 
 # Helpers
-- {name: Helpers/AccessTokenAdapter.swift,       path: Code/Helpers/access_token_adapter.swift.liquid, custom_name: "{{ prefix }}AccessTokenAdapter.swift"}
-- {name: Helpers/URNBuilder.swift,               path: Code/Helpers/urn_builder.swift.liquid, custom_name: "{{ prefix }}URNBuilder.swift"}
-- {name: Helpers/PromiseResponseProtocol.swift,  path: Code/Helpers/promise_response_protocol.swift.liquid, custom_name: "{{ prefix }}PromiseResponseProtocol.swift"}
-- {name: Helpers/UIWindowExtension.swift,        path: Code/Helpers/ui_window_extension.swift.liquid, custom_name: "{{ prefix }}UIWindowExtension.swift"}
+- {name: Helpers/AccessTokenAdapter.swift,       path: Code/Helpers/access_token_adapter.swift.liquid, custom_name: "AccessTokenAdapter.swift"}
+- {name: Helpers/URNBuilder.swift,               path: Code/Helpers/urn_builder.swift.liquid, custom_name: "URNBuilder.swift"}
+- {name: Helpers/PromiseResponseProtocol.swift,  path: Code/Helpers/promise_response_protocol.swift.liquid, custom_name: "PromiseResponseProtocol.swift"}
+- {name: Helpers/UIWindowExtension.swift,        path: Code/Helpers/ui_window_extension.swift.liquid, custom_name: "UIWindowExtension.swift"}
 
 # Helpers/Error
-- {name: Helpers/Error/ApplicationError.swift,    path: Code/Helpers/Error/application_error.swift.liquid, custom_name: "{{ prefix }}ApplicationError.swift"}
-- {name: Helpers/Error/APIError.swift,            path: Code/Helpers/Error/api_error.swift.liquid, custom_name: "{{ prefix }}APIError.swift"}
-- {name: Helpers/Error/ShowErrorProtocol.swift,   path: Code/Helpers/Error/show_error_protocol.swift.liquid, custom_name: "{{ prefix }}ShowErrorProtocol.swift"}
+- {name: Helpers/Error/ApplicationError.swift,    path: Code/Helpers/Error/application_error.swift.liquid, custom_name: "ApplicationError.swift"}
+- {name: Helpers/Error/APIError.swift,            path: Code/Helpers/Error/api_error.swift.liquid, custom_name: "APIError.swift"}
+- {name: Helpers/Error/ShowErrorProtocol.swift,   path: Code/Helpers/Error/show_error_protocol.swift.liquid, custom_name: "ShowErrorProtocol.swift"}
 
 # CustomViews
-- {name: CustomViews/BottomErrorViewswift,    path: Code/CustomViews/bottom_error_view.swift.liquid, custom_name: "{{ prefix }}BottomErrorView.swift"}
+- {name: CustomViews/BottomErrorViewswift,    path: Code/CustomViews/bottom_error_view.swift.liquid, custom_name: "BottomErrorView.swift"}
 
 # CustomViews/Buttons
-- {name: CustomViews/Buttons/ActionButton.swift,          path: Code/CustomViews/Buttons/action_button.swift.liquid, custom_name: "{{ prefix }}ActionButton.swift"}
-- {name: CustomViews/Buttons/SocialNetworkButton.swift,   path: Code/CustomViews/Buttons/social_network_button.swift.liquid, custom_name: "{{ prefix }}SocialNetworkButton.swift"}
+- {name: CustomViews/Buttons/ActionButton.swift,          path: Code/CustomViews/Buttons/action_button.swift.liquid, custom_name: "ActionButton.swift"}
+- {name: CustomViews/Buttons/SocialNetworkButton.swift,   path: Code/CustomViews/Buttons/social_network_button.swift.liquid, custom_name: "SocialNetworkButton.swift"}
 
 # Extensions
-- {name: Extensions/UIColorHexString.swift,   path: Code/Extensions/ui_color_hex_string.swift.liquid, custom_name: "{{ prefix }}UIColorHexString.swift"}
-- {name: Extensions/UIFontExtension.swift,    path: Code/Extensions/ui_font_extension.swift.liquid, custom_name: "{{ prefix }}UIFontExtension.swift"}
+- {name: Extensions/UIColorHexString.swift,   path: Code/Extensions/ui_color_hex_string.swift.liquid, custom_name: "UIColorHexString.swift"}
+- {name: Extensions/UIFontExtension.swift,    path: Code/Extensions/ui_font_extension.swift.liquid, custom_name: "UIFontExtension.swift"}
 
 # Models/Common
-- {name: Models/Common/Location.swift,      path: Code/Models/Common/location.swift.liquid, custom_name: "{{ prefix }}Location.swift"}
-- {name: Models/Common/SocialUser.swift,    path: Code/Models/Common/social_user.swift.liquid, custom_name: "{{ prefix }}SocialUser.swift"}
+- {name: Models/Common/Location.swift,      path: Code/Models/Common/location.swift.liquid, custom_name: "Location.swift"}
+- {name: Models/Common/SocialUser.swift,    path: Code/Models/Common/social_user.swift.liquid, custom_name: "SocialUser.swift"}
 
 # Models/DTO
-- {name: Models/DTO/BaseResponse.swift,   path: Code/Models/DTO/base_response.swift.liquid, custom_name: "{{ prefix }}BaseResponse.swift"}
-- {name: Models/DTO/Pagination.swift,     path: Code/Models/DTO/pagination.swift.liquid, custom_name: "{{ prefix }}Pagination.swift"}
+- {name: Models/DTO/BaseResponse.swift,       path: Code/Models/DTO/base_response.swift.liquid, custom_name: "BaseResponse.swift"}
+- {name: Models/DTO/Pagination.swift,         path: Code/Models/DTO/pagination.swift.liquid, custom_name: "Pagination.swift"}
+- {name: Models/DTO/BaseHeaderResponse.swift, path: Code/Models/DTO/base_header_response.swift.liquid, custom_name: "BaseHeaderResponse.swift"}
 
 # SupportingFiles
 
-- {name: SupportingFiles/cls_xib.sh, path: Code/SupportingFiles/cls_xib.sh.liquid, custom_name: "{{ prefix }}cls_xib.sh"}
-- {name: SupportingFiles/cls.sh,     path: Code/SupportingFiles/cls.sh.liquid, custom_name: "{{ prefix }}cls.sh"}
+- {name: SupportingFiles/cls_xib.sh, path: Code/SupportingFiles/cls_xib.sh.liquid, custom_name: "cls_xib.sh"}
+- {name: SupportingFiles/cls.sh,     path: Code/SupportingFiles/cls.sh.liquid, custom_name: "cls.sh"}
 
 

@@ -1,10 +1,4 @@
-//
-//  {{ module_info.file_name }}
-//  {{ module_info.project_name }}
-//
-//  Created by {{ developer.name }} on {{ date }}.
-//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
-//
+{% include 'header' %}
 
 import UIKit
 
@@ -19,7 +13,7 @@ class ApplicationRoot: NSObject {
     fileprivate let whisper: InAppNotificationsProvider
     fileprivate let notificationCenter: NotificationCenter
     
-    init(withNavigation navigation: GivingliNavigationController) {
+    init(withNavigation navigation: AppNavigationController) {
         
         let services =  ServicesAssembly.shared
         let presentation = PresentationAssembly.shared
@@ -42,8 +36,8 @@ class ApplicationRoot: NSObject {
         if token != nil {
             router.showMainScreen(animated: false, completion: nil)
         } else {
-            let urn = LoginFactory.shared.moduleURN
-            self.router.pushModule(byUrn: urn, animated: true, completion: nil)
+ //           let urn = LoginFactory.shared.moduleURN
+ //           self.router.pushModule(byUrn: urn, animated: true, completion: nil)
         }
     }
     

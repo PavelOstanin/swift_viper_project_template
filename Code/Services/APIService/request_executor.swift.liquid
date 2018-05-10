@@ -1,10 +1,4 @@
-//
-//  {{ module_info.file_name }}
-//  {{ module_info.project_name }}
-//
-//  Created by {{ developer.name }} on {{ date }}.
-//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
-//
+{% include 'header' %}
 
 import Foundation
 import Alamofire
@@ -55,19 +49,11 @@ class RequestExecutor {
 //                session.adapter = UserUniqueDataStringAdapter.init()
             return
         }
-        session.adapter = AccessTokenAdapter(accessToken: accessToken,
-                                             tokenType : tokenType,
-                                             client : client,
-                                             expiry : expiry,
-                                             uid : uid)
+        session.adapter = AccessTokenAdapter(accessToken: accessToken)
     }
     
     func proccess(accessToken: BaseHeaderResponse) {
         settings.accessToken = accessToken.accessToken
-        settings.tokenType = accessToken.tokenType
-        settings.client = accessToken.client
-        settings.expiry = accessToken.expiry
-        settings.uid = accessToken.uid
         self.configureSession()
     }
     

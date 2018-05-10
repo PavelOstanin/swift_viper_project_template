@@ -1,10 +1,4 @@
-//
-//  {{ module_info.file_name }}
-//  {{ module_info.project_name }}
-//
-//  Created by {{ developer.name }} on {{ date }}.
-//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
-//
+{% include 'header' %}
 
 import UIKit
 import Compass
@@ -13,14 +7,14 @@ class AppRouterImpl: AppRouterProtocol {
 
     // MARK:
     fileprivate let modulesList             : Array<ModuleFactoryProtocol>
-    fileprivate let _navigationController   : GivingliNavigationController
+    fileprivate let _navigationController   : AppNavigationController
 //    fileprivate var _tabbarController       : GivingliTabBarController?
     fileprivate let styleKit                : StyleKit
     fileprivate let settings                : AppSettingsService
     
     fileprivate var notificationCenter: NotificationCenter? = nil
     
-    init(withNavigation controller: GivingliNavigationController, modules: Array<ModuleFactoryProtocol>, urlScheme: String) {
+    init(withNavigation controller: AppNavigationController, modules: Array<ModuleFactoryProtocol>, urlScheme: String) {
         
         styleKit = PresentationAssembly.shared.styleKit
         settings = ServicesAssembly.shared.settingsService
@@ -38,7 +32,7 @@ class AppRouterImpl: AppRouterProtocol {
     
     // MARK:
     
-    var navigationController: GivingliNavigationController {
+    var navigationController: AppNavigationController {
         return _navigationController
     }
     
@@ -158,8 +152,8 @@ class AppRouterImpl: AppRouterProtocol {
     
     
     func showMainScreen(animated: Bool, completion: ModuleCompletionHandler?) {
-        let urn = MainFactory.shared.moduleURN
-        replaceViewStack(rootUrn: urn, animated: animated, completion: completion)
+ //       let urn = MainFactory.shared.moduleURN
+ //       replaceViewStack(rootUrn: urn, animated: animated, completion: completion)
     }
     
     func showSideMenu() {
@@ -403,14 +397,14 @@ extension AppRouterImpl {
         return controller
     }
     
-    func navigationControllerBy(urn: String, completion: ModuleCompletionHandler?) -> GivingliNavigationController? {
+    func navigationControllerBy(urn: String, completion: ModuleCompletionHandler?) -> AppNavigationController? {
         guard let controller = controllerBy(urn: urn, completion: completion) else {
             fatalError("Can't create controller by URN: \(urn)")
         }
-        return GivingliNavigationController(rootViewController: controller)
+        return AppNavigationController(rootViewController: controller)
     }
     
-    func navigationControllerBy(urn: String) -> GivingliNavigationController? {
+    func navigationControllerBy(urn: String) -> AppNavigationController? {
         return navigationControllerBy(urn: urn, completion: nil)
     }
         
