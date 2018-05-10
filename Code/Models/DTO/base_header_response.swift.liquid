@@ -1,0 +1,16 @@
+{% include 'header' %}
+
+import ObjectMapper
+
+class BaseHeaderResponse: Mappable {
+    
+    var accessToken     : String?    = nil
+
+    required init?(map: Map) {
+        mapping(map: map)
+    }
+    
+    func mapping(map: Map) {
+        accessToken  <- map["access-token"]
+    }
+}
