@@ -35,11 +35,11 @@ code_files:
 - {name: Presentation/StyleKit/DefaultAppStyle.swift, path: Code/Presentation/StyleKit/default_app_style.liquid, custom_name: "DefaultAppStyle.swift"}
 
 # Presentation/SocialProviders
-- {name: Presentation/SocialProvider/SocialProviderProtocol.swift,        path: Code/Presentation/SocialProvider/social_provider_protocol.swift.liquid, custom_name: "SocialProviderProtocol.swift"}
-- {name: Presentation/SocialProvider/SocialProvider.swift,                path: Code/Presentation/SocialProvider/social_provider.swift.liquid, custom_name: "SocialProvider.swift"}
-- {name: Presentation/SocialProvider/Providers/MainProviderImpl.swift,    path: Code/Presentation/SocialProvider/Providers/main_provider_impl.swift.liquid, custom_name: "MainProviderImpl.swift"}
-- {name: Presentation/SocialProvider/Providers/FacebookProviderImpl.swift,path: Code/Presentation/SocialProvider/Providers/facebook_provider_impl.swift.liquid, custom_name: "FacebookProviderImpl.swift"}
-- {name: Presentation/SocialProvider/Providers/GoogleProviderImpl.swift,  path: Code/Presentation/SocialProvider/Providers/google_provider_impl.swift.liquid, custom_name: "GoogleProviderImpl.swift"}
+- {name: Presentation/SocialProvider/SocialProviderProtocol.swift,         path: Code/Presentation/SocialProvider/social_provider_protocol.swift.liquid, custom_name: "SocialProviderProtocol.swift"}
+- {name: Presentation/SocialProvider/SocialProvider.swift,                 path: Code/Presentation/SocialProvider/social_provider.swift.liquid, custom_name: "SocialProvider.swift"}
+- {name: Presentation/SocialProvider/Providers/MainProviderImpl.swift,     path: Code/Presentation/SocialProvider/Providers/main_provider_impl.swift.liquid, custom_name: "MainProviderImpl.swift"}
+- {name: Presentation/SocialProvider/Providers/FacebookProviderImpl.swift, path: Code/Presentation/SocialProvider/Providers/facebook_provider_impl.swift.liquid, custom_name: "FacebookProviderImpl.swift"}
+- {name: Presentation/SocialProvider/Providers/GoogleProviderImpl.swift,   path: Code/Presentation/SocialProvider/Providers/google_provider_impl.swift.liquid, custom_name: "GoogleProviderImpl.swift"}
 
 
 # Services
@@ -76,6 +76,9 @@ code_files:
 - {name: Helpers/Error/ApplicationError.swift,    path: Code/Helpers/Error/application_error.swift.liquid, custom_name: "ApplicationError.swift"}
 - {name: Helpers/Error/APIError.swift,            path: Code/Helpers/Error/api_error.swift.liquid, custom_name: "APIError.swift"}
 - {name: Helpers/Error/ShowErrorProtocol.swift,   path: Code/Helpers/Error/show_error_protocol.swift.liquid, custom_name: "ShowErrorProtocol.swift"}
+
+# Helpers/DateFormatter
+- {name: Helpers/DateFormatter/DateFormatter.swift,   path: Code/Helpers/DateFormatter/date_formatter.swift.liquid, custom_name: "DateFormatter.swift"}
 
 # CustomViews
 - {name: CustomViews/BottomErrorViewswift,    path: Code/CustomViews/bottom_error_view.swift.liquid, custom_name: "BottomErrorView.swift"}

@@ -1,0 +1,63 @@
+{% include 'header' %}
+
+import UIKit
+
+class ClosureButton: UIButton {
+    
+    var touchUpInside:((_ button: UIButton) -> ())?
+
+    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:)") }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupButton()
+    }
+
+    func setupButton() {
+        addTarget(self, action: #selector(touchUpInside(sender:)), for: [.touchUpInside])
+    }
+    
+    @objc func touchUpInside(sender: UIButton) {
+        touchUpInside?(sender)
+    }
+
+}
+
+extension UIBarButtonItem {
+
+    class func backBarItemWith (target: Any?, with output: Closeable) -> UIBarButtonItem {
+        let button = ClosureButton(type: .custom)
+        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0)
+        button.touchUpInside = { _ in
+            output.close()
+        }
+        button.setImage(Asset.back.image, for: .normal)
+        return UIBarButtonItem(customView: button)
+    }
+
+    class func closeBarItemWith (target: Any?, with output: Closeable) -> UIBarButtonItem {
+        let button = ClosureButton(type: .custom)
+        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -15)
+        button.touchUpInside = { _ in
+            output.close()
+        }
+        button.setImage(Asset.close.image, for: .normal)
+        return UIBarButtonItem(customView: button)
+    }
+
+}
+
+extension UIViewController {
+    
+    func g_setupBackButton(with output: Closeable) {
+        let backButtonItem = UIBarButtonItem.backBarItemWith(target: self, with: output)
+        self.navigationItem.setLeftBarButtonItems([backButtonItem], animated: true)
+    }
+
+    func g_setupCloseButton(with output: Closeable) {
+        let buttonItem = UIBarButtonItem.closeBarItemWith(target: self, with: output)
+        self.navigationItem.setRightBarButtonItems([buttonItem], animated: true)
+    }
+
+}

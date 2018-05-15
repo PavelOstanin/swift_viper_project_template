@@ -10,3 +10,9 @@ protocol ModuleInputProtocol {
      */
     func setupInitialState(withArguments args: NamedValuesType, completion: ModuleCompletionHandler?)
 }
+
+@objc protocol Closeable {
+    
+    @objc func close()
+    
+}
